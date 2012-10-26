@@ -26,10 +26,9 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
     'pyramid',
-    'zopen.frs.core',
     'pygments',
-    'z3c.batching',
     'docutils',
+   # 'zope.datetime'
 ]
 
 setup(

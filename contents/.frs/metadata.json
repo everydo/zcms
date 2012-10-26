@@ -1,0 +1,9 @@
+{
+    "main": {
+        "hidden_keys":[],
+	"keys":["index.rst", "products", "about"]},
+   "dublin":{
+	"title":"demo site",
+	"description":"a demo site"
+   }
+}

@@ -5,7 +5,7 @@ from pyramid.url import resource_url
 from pyramid.response import Response
 from pyramid.renderers import render
 
-from z3c.batching.batch import Batch
+#from z3c.batching.batch import Batch
 
 from models import Document
 from views import render_tabs, render_cols
@@ -19,7 +19,8 @@ def blog_view(context, request, size=5):
         batch_start = batch_start[:-1]
     batch_start = int(batch_start)
     posts = []
-    blog_subpaths = Batch(context.get_recent_file_subpaths(), start=batch_start, size=size)
+    #blog_subpaths = Batch(context.get_recent_file_subpaths(), start=batch_start, size=size)
+    blog_subpaths = context.get_recent_file_subpaths()
 
     for subpath in blog_subpaths:
         obj = context.get_obj_by_subpath(subpath)
@@ -40,7 +41,7 @@ def blog_view(context, request, size=5):
                 'body':converted_html,
             })
 
-    batch = render_batch(blog_subpaths, request)
+    batch = '' # render_batch(blog_subpaths, request)
     return render(
         'templates/bloglist.pt',
         dict(

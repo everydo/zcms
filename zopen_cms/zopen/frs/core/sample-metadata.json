@@ -1,0 +1,27 @@
+{
+    "main": {
+        "mimetype": "text/x-python", 
+        "conenttype": "Document", 
+        "id": 1450906832, 
+        "stati": [
+            "visible.default", 
+            "modify.default"
+        ]
+    }, 
+    "dublin": {
+        "rights": "", 
+        "publisher": "", 
+        "identifier": "", 
+        "description": "", 
+        "contributors": [], 
+        "title": "bus2wp.py", 
+        "created": "2009-01-09 03:48:17", 
+        "modified": "2009-01-09 03:48:17", 
+        "language": "", 
+        "subjects": [], 
+        "creators": [
+            "users.wayhome"
+        ], 
+        "type": ""
+    }
+}
