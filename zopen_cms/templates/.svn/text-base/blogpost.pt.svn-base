@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal">
+    <head>
+        <title>${title}</title>
+    </head>
+    <body>
+        <div tal:replace="structure tabs"/>
+        <div id="main" xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:tal="http://xml.zope.org/namespaces/tal">
+            <!--a href="../@@blog.html"><img src="static/portal_blog_banner.jpg" alt="易度博文" title="" /></a-->
+            <p class="discreet"> 文章内容 </p>
+            <div class="blogPost" tal:define="post result;">
+                <div class="postItem">
+                    <h2><a tal:content="post.title"> title </a></h2>
+                    <p class="discreet">
+                        <span tal:replace="post.creator">zhangshan</span>
+                        <span tal:replace="post_created">2008-11-26 15:48</span>
+                    </p>
+                    <p class="documentDescription" 
+                       tal:content="post.description"> description </p>
+                    <p tal:content="structure post.body"> body </p>
+                    <div id="postcomment" class="postActions">
+                        <script>
+                            var idcomments_acct = '${idcomments_acct}';
+                            var idcomments_post_id;
+                            var idcomments_post_url;
+                        </script>
+                        <span id="IDCommentsPostTitle" style="display:none"></span>
+                        <script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+

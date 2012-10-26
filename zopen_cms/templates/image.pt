@@ -1,0 +1,9 @@
+<div id="main" xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal">
+    <h1 tal:content="title"> title </h1>
+    <p tal:content="description |nothing"> description </p>
+
+    <img tal:attributes="src url" />
+
+    <div tal:replace="structure tabs" />
+</div>

@@ -1,0 +1,12 @@
+<div id="main" xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal">
+    <h1 tal:condition="title" tal:content="title"> title </h1>
+    <p class="contentDescription" tal:condition="description" tal:content="description"> description </p>
+  <ol>
+    <li tal:repeat="item items">
+        <a tal:attributes="href item.url"
+            tal:content="item.title">title</a>
+        <p tal:condition="item.description" tal:content="item.description">description </p>
+    </li>
+  </ol>
+</div>

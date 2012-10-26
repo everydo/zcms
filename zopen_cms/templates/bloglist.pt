@@ -1,0 +1,16 @@
+<div class="blogPost" tal:repeat="post result">
+    <div class="postItem">
+        <h2><a tal:attributes="href string:${post.url}/@@blogpost.html">${post.title}</a></h2>
+        <p class="discreet">
+            <span tal:replace="post.creator">zhangshan</span>
+            <span tal:replace="post.created">2008-11-26 15:48</span>
+        </p>
+        <p class="documentDescription" tal:content="post.description"> description </p>
+        <div tal:content="structure post.body"> body </div>
+        <p class="postActions">
+            <a tal:attributes="href string:${post.url}/@@blogpost.html#postcomment">评论...</a>
+        </p>
+    </div>
+</div>
+
+<div tal:replace="structure batch" />

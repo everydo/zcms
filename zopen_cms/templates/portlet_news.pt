@@ -1,0 +1,17 @@
+<div class="edoBox">
+<dl class="portlet">
+    <dt class="portletHeader"><span>${title}</span> </dt>
+    <dd class="portletItem">
+ <tal:block tal:repeat="post result">
+    <a tal:attributes="href post.url;
+                           title post.description">${post.title}</a>
+    <div class="discreet" style="text-align:right">
+        <span tal:replace="post.created">2008-11-26 15:48</span>
+    </div>
+ </tal:block>
+    </dd>
+    <dd class="portletItem portletFooter">
+       <a tal:attributes="href container_url">更多</a>
+    </dd>
+</dl>
+</div>

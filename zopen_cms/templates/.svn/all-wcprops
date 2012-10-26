@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/72/trunk/zopen/cms/templates
+END
+contents.pt
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/29/trunk/zopen/cms/templates/contents.pt
+END
+document.pt
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/72/trunk/zopen/cms/templates/document.pt
+END
+file.pt
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/2/trunk/zopen/cms/templates/file.pt
+END
+batch.pt
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/12/trunk/zopen/cms/templates/batch.pt
+END
+image.pt
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/2/trunk/zopen/cms/templates/image.pt
+END
+blog.pt
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/68/trunk/zopen/cms/templates/blog.pt
+END
+rss.pt
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/47/trunk/zopen/cms/templates/rss.pt
+END
+blogpost.pt
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/68/trunk/zopen/cms/templates/blogpost.pt
+END
+contact.pt
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/46/trunk/zopen/cms/templates/contact.pt
+END

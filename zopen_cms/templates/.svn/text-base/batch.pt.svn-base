@@ -1,0 +1,38 @@
+<div class="listingBar" tal:condition="python:batch_total>1">
+    <span class="previous" tal:condition="batch.previous">
+        <a href="" tal:attributes="href previous_url;class string:kssattr-batch-${kss_previous_number}"> 
+            《 前 <span tal:replace="batch_size"></span> 项
+        </a>
+    </span>
+    <span class="next" tal:condition="batch.next">
+        <a href="" tal:attributes="href next_url;class string:kssattr-batch-${kss_next_number}"> 
+            后 <span tal:replace="batch_size"></span> 项 》 
+        </a>
+    </span>
+
+    <tal:block tal:condition="first_batch">
+        <a href="blog.html?b_start=${first_batch.start}" tal:attributes=" class string:kssattr-batch-${first_batch.start}">
+            <span tal:content="first_batch.number"></span>...
+        </a>
+    </tal:block>
+    <tal:block tal:repeat="batch previous_batchs">
+        <a href="blog.html?b_start=${batch.start}" tal:attributes=" class string:kssattr-batch-${batch.start}">
+            <span tal:content="batch.number"></span>
+        </a>
+    </tal:block>
+    <tal:block>
+        <a href="blog.html?b_start=${batch.start}" tal:attributes=" class string:kssattr-batch-${batch.start}">
+            [<span tal:content="batch.number"></span>]
+        </a>
+    </tal:block>
+    <tal:block tal:repeat="batch next_batchs">
+        <a href="blog.html?b_start=${batch.start}" tal:attributes=" class string:kssattr-batch-${batch.start}">
+            <span tal:content="batch.number"></span>
+        </a>
+    </tal:block>
+    <tal:block tal:condition="last_batch">
+        <a href="blog.html?b_start=${last_batch.start}" tal:attributes=" class string:kssattr-batch-${last_batch.start}">
+            ...<span tal:content="last_batch.number"></span>
+        </a>
+    </tal:block>
+</div>

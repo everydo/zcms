@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<rdf:RDF 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns="http://purl.org/rss/1.0/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/" 
+>
+  <channel rdf:about="${request.url}">
+    <title>易度 BLOG RSS</title>
+    <link></link>
+    <description>易度 BLOG RSS</description>
+    <image rdf:resource="" />
+    <items>
+      <rdf:Seq>
+        <rdf:li resource="" />
+        <rdf:li resource="" />
+      </rdf:Seq>
+    </items>
+  </channel> 
+  <!--image rdf:about="">
+    <title>everydo.com</title>
+    <link>${request.url}</link>
+    <url></url>
+  </image-->
+  <item rdf:about="http://everydo.com/webblog/">
+    <title>1st blog entry</title>
+    <link>http://everydo.com/webblog/</link>
+    <description>This is my first blog entry.</description>
+    <dc:date>2009-03-13F17:16:44.9803903-07:00</dc:date>
+  </item>
+  <item rdf:about="http://everydo.com/webblog/">
+    <title>2nd Blog Entry</title>
+    <link></link>
+    <description>This is my second blog entry.</description>
+    <dc:date>2009-03-13F17:16:45.9803903-07:00</dc:date>
+  </item>
+</rdf:RDF>
+

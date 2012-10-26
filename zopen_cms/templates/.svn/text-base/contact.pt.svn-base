@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal">
+    <head>
+        <title>联系我们</title>
+    </head>
+    <body>
+        <div id="main">
+            <div>
+                <p><b>${reply_str}</b></p>
+
+                <form name="feedback_form" action="" method="post">
+                    <fieldset>
+                        <legend> 反馈详细信息 </legend>
+                        <div class="field">
+                            <label for="sender_fullname"> 名字 </label>
+                            <div class="formHelp"> 请输入您的姓名 </div>
+                            <div> </div>
+                            <input type="text" id="sender_fullname" name="sender_fullname" size="40" tabindex="0" value="${sender_fullname}"/>
+                        </div>
+                        <div class="field">
+                            <label for="sender_from_address"> 电子邮件 </label>
+                            <span class="fieldRequired" title="需填"> （必填） </span>
+                            <div class="formHelp"> 请输入您的邮件地址 </div>
+                            <input type="text" id="sender_from_address" name="sender_from_address" size="40" value="${sender_from_address}"/>
+                        </div>
+                        <div class="field">
+                            <label for="sender_from_company_name"> 公司名称 </label>
+                            <span class="fieldRequired" title="需填"> （必填） </span>
+                            <div class="formHelp"> 请输入您公司的名称 </div>
+                            <div> </div>
+                            <input type="text" id="company_name" name="company_name" size="25" value="${company_name}"/>
+                        </div>
+                        <div class="field">
+                            <label for="sender_from_company_website"> 公司网址 </label>
+                            <div class="formHelp"> 请输入您公司的网址 </div>
+                            <div> </div>
+                            <input type="text" id="company_website" name="company_website" size="25" value="${company_website}"/>
+                        </div>
+                        <div class="field">
+                            <label for="sender_from_company_tel"> 联系电话 </label>
+                            <span class="fieldRequired" title="需填"> （必填） </span>
+                            <div class="formHelp"> 请输入您的联系电话 </div>
+                            <div> </div>
+                            <input type="text" id="company_tel" name="company_tel" size="25" value="${company_tel}"/>
+                        </div>
+                        <div class="field">
+                            <label for="subject"> 标题 </label>
+                            <span class="fieldRequired" title="需填"> （必填） </span>
+                            <div class="formHelp"> 请输入希望发送的消息主题。 </div>
+                            <div> </div>
+                            <input type="text" id="subject" name="subject" size="25" value="${subject}"/>
+                        </div>
+                        <div class="field">
+                            <label for="message"> 消息 </label>
+                            <span class="fieldRequired" title="需填"> （必填） </span>
+                            <div class="formHelp"> 请输入需要发送的消息。 </div>
+                            <div> </div>
+                            <textarea name="message" id="message" rows="5" cols="25">${message} </textarea>
+                        </div>
+                        <div class="formControls">
+                            <input class="context" type="submit" name="form.button.Send" value="发送" />
+                        </div>
+                    </fieldset>
+                    <input type="hidden" name="form.submitted" value="1" />
+                </form>
+            </div>
+       </div>
+   </body>
+</html>

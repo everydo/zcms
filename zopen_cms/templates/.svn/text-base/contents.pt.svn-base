@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal">
+    <head>
+        <title>${title}</title>
+    </head>
+<body>
+
+    <div tal:replace="structure tabs" />
+    <td tal:replace="structure html_cols.get('right','')" />
+    <td tal:replace="structure html_cols.get('left','')" />
+
+<div id="main" xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal">
+    <h1 tal:condition="title" tal:content="title"> title </h1>
+    <p class="contentDescription" tal:condition="description" tal:content="description"> description </p>
+  <ol>
+    <li tal:repeat="item contents">
+        <a tal:attributes="href item.url"
+            tal:content="item.title">title</a>
+        <p tal:condition="item.description" tal:content="item.description">description </p>
+    </li>
+  </ol>
+</div>
+
+</body>
+</html>

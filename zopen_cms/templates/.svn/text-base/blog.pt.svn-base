@@ -1,0 +1,38 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal">
+    <head>
+      <link type="application/rss+xml" title="RSS 1.0" href="./rss.html" rel="alternate"/>
+      <title>${title}</title>
+    </head>
+    <body>
+        <div tal:replace="structure tabs"/>
+        <td tal:replace="structure html_cols.get('right','')" />
+        <td tal:replace="structure html_cols.get('left','')" />
+
+        <div id="main" xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:tal="http://xml.zope.org/namespaces/tal">
+            <!--img src="/static/portal_blog_banner.jpg" alt="博文" title="" /-->
+            <p class="discreet"> 最近发布的文章。 </p>
+
+            <div class="blogPost" tal:repeat="post result">
+            <div class="postItem">
+                <h2><a tal:attributes="href string:${post.url}/@@blogpost.html">${post.title}</a></h2>
+                <p class="discreet">
+                    <span tal:replace="post.creator">zhangshan</span>
+                    <span tal:replace="post.created">2008-11-26 15:48</span>
+                </p>
+                <p class="documentDescription" 
+                   tal:content="post.description"> description </p>
+                <div tal:content="structure post.body"> body </div>
+                <p class="postActions">
+                    <a tal:attributes="href string:${post.url}/@@blogpost.html">Read more...</a>&nbsp;&nbsp;
+                    <a tal:attributes="href string:${post.url}/@@blogpost.html#postcomment">评论...</a>
+                </p>
+            </div>
+            </div>
+
+            <div tal:replace="structure batch" />
+      </div>
+   </body>
+</html>

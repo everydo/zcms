@@ -1,0 +1,9 @@
+<div id="main" xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal">
+    <h1 tal:content="title"> title </h1>
+    <p tal:content="description |nothing"> description </p>
+
+    <a href="" tal:attributes="href url">下载</a>
+
+    <div tal:replace="structure tabs" />
+</div>
