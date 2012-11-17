@@ -4,11 +4,12 @@
 
 安装：
 
-  python setup.py install
+  python bootstrap.py -d
+  ./bin/buildout
 
 启动服务
 
-   pserve cms.ini
+   ./bin/pserve cms.ini
 
 
 

@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 import os
 import docutilsplugins
+import chardet
 
 from string import Template
 from pyramid.config import Configurator
@@ -12,8 +13,9 @@ _templates_cache = {}
 _pyramid_settings = None
 _single_root = ''
 
+
 def main(global_config, roots, **settings):
-    global _pyramid_settings 
+    global _pyramid_settings
     _pyramid_settings = settings.copy()
 
     # 根据配置，初始化文件库
@@ -28,7 +30,7 @@ def main(global_config, roots, **settings):
         folder = Folder(frs)
 
         # DEBUG模式下只显示第一个站点
-        if _pyramid_settings['single_root'] == 'true': 
+        if _pyramid_settings['single_root'] == 'true':
             root = roots[0]
             mount_name = os.path.basename(root) or os.path.basename(root[:-1])
             site = folder[mount_name]
@@ -39,10 +41,11 @@ def main(global_config, roots, **settings):
             return site
 
         return folder
- 
+
     config = Configurator(settings=settings, root_factory=get_root)
     config.scan('zopen_cms')
     return config.make_wsgi_app()
+
 
 class Theme(object):
     """WSGI中间件, 用于将pyramid response的内容渲染到theme中"""
@@ -69,19 +72,19 @@ class Theme(object):
             site = _single_root or path_info[1]
             theme = os.path.join(self.theme, site, 'index.html')
             kw = environ['zopen_cms.kw']
-            
+
             # NOTE(Prim): 根据debug_templates判断是否使用全局变量做缓存
             if _pyramid_settings['debug_templates'] == 'true':
-                template = Template(open(theme).read())
+                template = self._formate_template(theme)
             else:
                 global _templates_cache
                 if theme in _templates_cache:
                     template = _templates_cache[theme]
                 else:
-                    template = Template(open(theme).read())
+                    template = self._formate_template(theme)
                     _templates_cache[theme] = template
 
-            output = str(template.substitute(kw))
+            output = template.substitute(kw).encode('utf8')
             headers = [
                 ('Content-length', str(len(output))),
                 ('Content-type', 'text/html; charset=UTF-8')
@@ -90,3 +93,12 @@ class Theme(object):
             return output
 
         return self.app(environ, start_response)
+
+    def _formate_template(self, theme):
+        content = ''
+        with open(theme) as f:
+            content = f.read()
+        text_encoding = chardet.detect(content)['encoding']
+        content = content.decode(text_encoding)
+        template = Template(content)
+        return template
