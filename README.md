@@ -7,7 +7,12 @@ zcms : 基于文件系统的超轻CMS
 作为曾经在CMS系统征战多年的笔者，坚信简单的力量，zcms正是此概念之下的产物：
 
 - 不需要管理后台，网站内容，直接在文件系统上存放
-- 不需要php/asp/jsp/zpt，直接扩展reStructureText，来制作动态页面
+- 不需要php/asp/jsp/zpt，直接扩展reStructureText，来制作动态页面，扩展的指令包括:
+
+     .. news::
+     .. blog::
+     .. nav_tree::
+
 - 支持html/rst/md等多种文本格式
 - 使用json描述属性
 - 模版是纯html
