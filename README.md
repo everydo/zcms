@@ -28,6 +28,8 @@ zcms : 基于文件系统的超轻CMS
 
 demo sites
 ===========
+我们易度的所有站点，都采用这个开发完成：
+
 - http://everydo.com
 - http://edodocs.com
 - http://viewer.everydo.com
