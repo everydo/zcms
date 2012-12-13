@@ -17,7 +17,7 @@ zcms : 基于文件系统的超轻CMS
   - 最新内容
   - blog
 
-demo
+demo sites
 ===========
 - http://everydo.com
 - http://edodocs.com
@@ -40,11 +40,11 @@ demo
 TODO
 ================
 1. 简化zopen.frs.core的代码，简化json元数据，去除多余的文件夹
-2. 支持多种文件类似：
+2. 提供更改内容的api（blog api），方便接入其他后台系统
+3. RSS
+4. 支持多种文件类似：
 
    - html
    - md
    - rst
 
-3. 提供更改内容的api（blog api），方便接入其他后台系统
-4. RSS

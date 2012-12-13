@@ -19,6 +19,7 @@ class FRSAsset(object):
     def __init__(self, frs, vpath=u'/'):
         self.frs = frs
         self.vpath = vpath
+        self._md = None
 
     @property
     def ospath(self):
@@ -26,7 +27,10 @@ class FRSAsset(object):
 
     @property
     def metadata(self):
-        return self.frs.getMetadata(self.vpath) or {}
+        if self._md is None:
+            import pdb;  pdb.set_trace()
+            self._md = self.frs.getMetadata(self.vpath) or {}
+        return self._md
 
     @property
     def title(self):
