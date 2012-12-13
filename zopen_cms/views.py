@@ -12,9 +12,10 @@ from pyramid.renderers import render, render_to_response
 from utils import rst2html, get_site, render_html
 from models import Folder, Document, Image, File
 
+
 def render_tabs(context, request):
     site = get_site(context)
-    if site is None: 
+    if site is None:
         return ''
 
     html_list = []
@@ -23,22 +24,23 @@ def render_tabs(context, request):
         if context.vpath.startswith(tab.vpath):
             class_str = "selected"
 
-        tab_url = resource_url(tab, request) # hack
+        tab_url = resource_url(tab, request)  # hack
         if tab_url.endswith('.rst/'):
             tab_url = tab_url[:-1]
 
         html_list.append(
-            '<li id="nav-%s" class="%s"><a href="%s">%s</a></li>' \
+            '<li id="nav-%s" class="%s"><a href="%s">%s</a></li>'
             % (tab.__name__, class_str, tab_url, tab.title)
-        )            
+        )
 
     html = '<ul id="portal-globalnav">%s</ul>' % ''.join(html_list)
     return html.decode('utf-8')
 
+
 def rst_col_path(name, context):
     # 往上找左右列
     if context.__name__ == '':
-        return '',''
+        return '', ''
     source_path = str(context.ospath)
     if isinstance(context, Folder):
         source_path = os.path.join(source_path, 'asf.rst')
@@ -46,9 +48,10 @@ def rst_col_path(name, context):
     col = dc_main.get(name, '')
     if col != '':
         return col, source_path
-    if context.__parent__ == None: 
+    if context.__parent__ is None:
         return col, source_path
     return rst_col_path(name, context.__parent__)
+
 
 def render_cols(context, request):
     html_left = ''
@@ -65,7 +68,7 @@ def render_cols(context, request):
             html_left = cvt_html
         else:
             html_left = """<td id="portal-column-one">
-                <div class="visualPadding">%s</div></td> 
+                <div class="visualPadding">%s</div></td>
                 """ % rst2html(left_col_rst, left_col_path, context, request)
 
     if right_col_rst == '':
@@ -76,19 +79,20 @@ def render_cols(context, request):
             html_right = cvt_html
         else:
             html_right = """<td id="portal-column-two">
-                <div class="visualPadding">%s</div></td> 
+                <div class="visualPadding">%s</div></td>
                 """ % rst2html(right_col_rst, right_col_path, context, request)
 
     if center_col_rst == '':
         html_center = ''
     else:
         cvt_html = rst2html(center_col_rst, center_col_path, context, request)
-        html_center = '<div>%s</div>' % rst2html(center_col_rst, center_col_path, context, request)
+        html_center = '<div>%s</div>' % rst2html(
+            center_col_rst, center_col_path, context, request)
 
     html_cols = {
         'left': html_left,
         'right': html_right,
-        'center': html_center 
+        'center': html_center
     }
     return html_cols
 
@@ -97,6 +101,7 @@ def render_cols(context, request):
 #   - content
 #   - left/right_col
 #   - nav
+
 
 @view_config(context=Folder)
 def folder_view(context, request):
@@ -112,7 +117,7 @@ def folder_view(context, request):
             continue
         return document_view(index, request)
 
-    items= []
+    items = []
     for obj in context.values(True, True):
         dc = obj.metadata.get('dublin', {})
         if hasattr(obj, '__getitem__'):
@@ -120,16 +125,16 @@ def folder_view(context, request):
         else:
             url = obj.__name__
         items.append({
-            'name':obj.__name__,
-            'title':dc.get('title', '') or obj.__name__,
-            'url':url,
-            'description':dc.get('description', '')
+            'name': obj.__name__,
+            'title': dc.get('title', '') or obj.__name__,
+            'url': url,
+            'description': dc.get('description', '')
         })
 
     dc = context.metadata.get('dublin', {})
 
     if context.vpath != '/':
-        nav = render_tabs(context,request)
+        nav = render_tabs(context, request)
     else:
         nav = ''
     html_cols = render_cols(context, request)
@@ -137,32 +142,33 @@ def folder_view(context, request):
     description = dc.get('description', '')
 
     content = render(
-        'templates/contents_main.pt', 
+        'templates/contents_main.pt',
         dict(
-            title = title, 
-            description = description,
-            items = items 
+            title=title,
+            description=description,
+            items=items
         )
     )
 
     kw = dict(
-        title = title, 
-        items = items,
-        
-        head = '<title>%s</title>' % title,
-        nav = nav,
-        left_col = html_cols.get('left', ''),
-        right_col = html_cols.get('right', ''),
-        content = content,
-        description = description
-    ) 
+        title=title,
+        items=items,
+
+        head='<title>%s</title>' % title,
+        nav=nav,
+        left_col=html_cols.get('left', ''),
+        right_col=html_cols.get('right', ''),
+        content=content,
+        description=description
+    )
 
     if context.vpath != '/':
         request.environ['zopen_cms.kw'] = kw
 
     if request.registry.settings.get('debug_templates', ''):
         return render_to_response('templates/contents.pt', kw)
-    return Response(headerlist=[('Content-type','text/html')]) 
+    return Response(headerlist=[('Content-type', 'text/html')])
+
 
 @view_config(context=Document)
 def document_view(context, request):
@@ -171,7 +177,7 @@ def document_view(context, request):
     site = get_site(context)
     site_title = site.title
     dc = context.metadata.get('dublin', {})
-    tabs = render_tabs(context,request)
+    tabs = render_tabs(context, request)
     description = dc.get('description', '')
     doc_title = dc.get('title', '')
     if not isinstance(doc_title, (str, unicode)):
@@ -180,79 +186,81 @@ def document_view(context, request):
         site_title = doc_title + ' - ' + site_title
 
     content = render(
-        'templates/document_main.pt', 
+        'templates/document_main.pt',
         dict(
-            title = doc_title, 
-            description = description, 
-            html = html,
-            html_cols = html_cols
+            title=doc_title,
+            description=description,
+            html=html,
+            html_cols=html_cols
         )
     )
 
     kw = dict(
-        site_title = site_title,
+        site_title=site_title,
 
-        head = '<title>%s</title>' % site_title,
-        nav = tabs,
-        left_col = html_cols.get('left', ''),
-        right_col = html_cols.get('right', ''),
-        content = content,
-        description = description
+        head='<title>%s</title>' % site_title,
+        nav=tabs,
+        left_col=html_cols.get('left', ''),
+        right_col=html_cols.get('right', ''),
+        content=content,
+        description=description
     )
     request.environ['zopen_cms.kw'] = kw
 
     if request.registry.settings.get('debug_templates', ''):
         return render_to_response('templates/document.pt', kw)
-    return Response(headerlist=[('Content-type','text/html')]) 
+    return Response(headerlist=[('Content-type', 'text/html')])
+
 
 @view_config(context=File, name="view.html")
 def file_view(context, request):
     dc = context.metadata.get('dublin', {})
-    tabs = render_tabs(context,request)
+    tabs = render_tabs(context, request)
     title = dc.get('title', context.__name__)
     description = dc.get('description', '')
     url = context.__name__
 
     kw = dict(
-        title = title, 
-        description = description, 
-        url = url,
-        tabs = tabs,
-        content = render(
-            'templates/file.pt', 
+        title=title,
+        description=description,
+        url=url,
+        tabs=tabs,
+        content=render(
+            'templates/file.pt',
             dict(
-                title = title, 
-                description = description, 
-                url = url,
-                tabs = tabs
+                title=title,
+                description=description,
+                url=url,
+                tabs=tabs
             )
         )
     )
     request.environ['zopen_cms.kw'] = kw
     if request.registry.settings.get('debug_templates', ''):
         return render_to_response('templates/file.pt', kw)
-    return Response(headerlist=[('Content-type','text/html')]) 
+    return Response(headerlist=[('Content-type', 'text/html')])
+
 
 @view_config(context=Image, name="view.html")
 def image_view(context, request):
     dc = context.metadata.get('dublin', {})
-    tabs = render_tabs(context,request)
+    tabs = render_tabs(context, request)
     title = dc.get('title', context.__name__)
     description = dc.get('description', '')
     url = context.__name__
 
     kw = dict(
-        title = title, 
-        description = description, 
-        url = url,
-        tabs = tabs,
-        content = render(
-            'templates/image.pt', 
+        title=title,
+        description=description,
+        url=url,
+        tabs=tabs,
+        content=render(
+            'templates/image.pt',
             dict(
-                title = title, 
-                description = description, 
-                url = url,
-                tabs = tabs
+                title=title,
+                description=description,
+                url=url,
+                tabs=tabs
             )
         )
     )
@@ -260,7 +268,8 @@ def image_view(context, request):
 
     if request.registry.settings.get('debug_templates', ''):
         return render_to_response('templates/image.pt', kw)
-    return Response(headerlist=[('Content-type','text/html')]) 
+    return Response(headerlist=[('Content-type', 'text/html')])
+
 
 @view_config(context=File)
 def download_view(context, request):
