@@ -9,9 +9,6 @@ from hashlib import md5
 from config import FS_CHARSET
 from types import UnicodeType
 import array, binascii
-import sys
-
-FS_CHARSET = sys.getfilesystemencoding()
 
 def int2ascii(value):
     return binascii.b2a_hex(buffer(array.array('l', (value,))))  # 4byte

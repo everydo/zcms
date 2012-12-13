@@ -6,7 +6,7 @@ import chardet
 from string import Template
 from pyramid.config import Configurator
 
-from zopen_frs import FRS
+from zopen.frs.core import FRS
 from zopen_cms.models import Folder
 
 _templates_cache = {}

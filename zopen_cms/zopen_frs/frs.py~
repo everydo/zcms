@@ -10,7 +10,6 @@ from StringIO import StringIO
 from utils import ucopy2, ucopytree, umove
 from cache import CacheMixin
 from jsonutils import AwareJSONEncoder,AwareJSONDecoder
-import json
 
 FRS_CACHE_FOLDER_PREFIX = '.frs.'
 

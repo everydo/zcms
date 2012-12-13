@@ -86,6 +86,11 @@ def get_sub_time_paths(folder, root_vpath):
     return result
 
 def rst2html(rst, path, context, request):
+    rst = rst.lstrip()
+    if not rst: return ''
+    if rst.lstrip()[0] == '<': 
+        return rst
+
     settings = {
         'halt_level':6,
         'input_encoding':'UTF-8',
