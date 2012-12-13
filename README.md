@@ -119,3 +119,4 @@ TODO
 3. 支持markdown
 4. 提供RSS
 5. 缓存，减少对文件系统的访问，减少metadata解析
+6. 生成的html，符合Bootstrap的规范
