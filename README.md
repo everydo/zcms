@@ -31,13 +31,13 @@ demo sites
 安装
 ====================
 
-  python bootstrap.py -d
-  ./bin/buildout
+    python bootstrap.py -d
+    ./bin/buildout
 
 启动服务
 =======================
 
-   ./bin/pserve cms.ini
+    ./bin/pserve cms.ini
 
 制作新站点
 =================
@@ -51,19 +51,19 @@ contents/.frs/metadata.json
 
 contents/.frs/index.rst.json 首页内容设置
 -------------------------------------------------
-描述了首页index.rst的信息，内容如下：
-
- {
-  "main": {
+描述了首页index.rst的信息，内容如下
+ 
+    {
+    "main": {
       "left_col":".. include:: indexcol.rst",
       "right_col":"",
       "contenttype": "Document"
-  },
-  "dublin": {
+    },
+    "dublin": {
       "description": "",
       "title": "易度，带您进入互联网工作时代！"
-  }
- }
+    }
+    }
 
 说明：
 
@@ -74,20 +74,20 @@ contents/.frs/index.rst.json 首页内容设置
 
 在.frs/products/metadata.xml有如下内容：
 
- {
-  "main": {
+    {
+     "main": {
       "left_col": ".. navtree::\n   :root_depth: 2",
       "hidden_keys": [
           "img",
           "index.rst"
       ],
       "contenttype": "Folder"
-  },
-  "dublin": {
+     },
+     "dublin": {
       "description": "",
       "title": "产品信息"
-  }
- }
+     }
+    }
 
 说明：
 
