@@ -27,17 +27,26 @@ demo
 
 安装
 ====================
-::
 
   python bootstrap.py -d
   ./bin/buildout
 
 启动服务
 =======================
-::
 
    ./bin/pserve cms.ini
 
+配置文件
+====================
+app.ini
+
+定制皮肤
+==============
+调整themes/index.html
+
+内容
+============
+参看contents
 
 TODO
 ================
