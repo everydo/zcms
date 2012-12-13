@@ -106,7 +106,7 @@ reStructuredText写法入门介绍：http://karronqiu.googlepages.com/ReStructur
 
 TODO
 ================
-1. 简化zopen.frs.core的代码，简化json元数据，去除多余的文件夹
-2. 提供更改内容的api（blog api），方便接入其他后台系统
+1. 继续简化json元数据，太复杂了！
+2. 提供更改内容的api（blog api？）
 3. 支持markdown
-4. RSS
+4. 提供RSS
