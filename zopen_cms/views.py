@@ -44,7 +44,7 @@ def rst_col_path(name, context):
     source_path = str(context.ospath)
     if isinstance(context, Folder):
         source_path = os.path.join(source_path, 'asf.rst')
-    dc_main = context.metadata.get('main', {})
+    dc_main = context.metadata
     col = dc_main.get(name, '')
     if col != '':
         return col, source_path
@@ -119,7 +119,7 @@ def folder_view(context, request):
 
     items = []
     for obj in context.values(True, True):
-        dc = obj.metadata.get('dublin', {})
+        dc = obj.metadata
         if hasattr(obj, '__getitem__'):
             url = obj.__name__ + '/'
         else:
@@ -131,7 +131,7 @@ def folder_view(context, request):
             'description': dc.get('description', '')
         })
 
-    dc = context.metadata.get('dublin', {})
+    dc = context.metadata
 
     if context.vpath != '/':
         nav = render_tabs(context, request)
@@ -176,7 +176,7 @@ def document_view(context, request):
     html_cols = render_cols(context, request)
     site = get_site(context)
     site_title = site.title
-    dc = context.metadata.get('dublin', {})
+    dc = context.metadata
     tabs = render_tabs(context, request)
     description = dc.get('description', '')
     doc_title = dc.get('title', '')
@@ -214,7 +214,7 @@ def document_view(context, request):
 
 @view_config(context=File, name="view.html")
 def file_view(context, request):
-    dc = context.metadata.get('dublin', {})
+    dc = context.metadata
     tabs = render_tabs(context, request)
     title = dc.get('title', context.__name__)
     description = dc.get('description', '')
@@ -243,7 +243,7 @@ def file_view(context, request):
 
 @view_config(context=Image, name="view.html")
 def image_view(context, request):
-    dc = context.metadata.get('dublin', {})
+    dc = context.metadata
     tabs = render_tabs(context, request)
     title = dc.get('title', context.__name__)
     description = dc.get('description', '')

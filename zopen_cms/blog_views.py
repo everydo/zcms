@@ -26,7 +26,7 @@ def blog_view(context, request, size=5):
         obj = context.get_obj_by_subpath(subpath)
         if obj is not None:
             url = '/'.join(obj.vpath.split('/')[2:])
-            dc = obj.metadata.get('dublin', {})
+            dc = obj.metadata
             raw_html = render_html(obj, request)
             converted_html = raw_html.replace(
                 'src="img/',
@@ -37,7 +37,7 @@ def blog_view(context, request, size=5):
                 'description':dc.get('description', ''),
                 'url':subpath,
                 'created':getDisplayTime(dc.get('modified', dc.get('created', ''))),
-                'creator':dc.get('creators', [])[0],
+                'creator':dc.get('creators', [''])[0],
                 'body':converted_html,
             })
 
@@ -62,7 +62,7 @@ def news_portlet(context, request, path, size=5):
     for subpath in blog_subpaths[:size]:
         obj = container.get_obj_by_subpath(subpath)
         if obj is not None:
-            dc = obj.metadata.get('dublin', {})
+            dc = obj.metadata
             url = resource_url(obj, request)
             if url.endswith('/'): url = url[:-1]
             posts.append({
@@ -70,7 +70,7 @@ def news_portlet(context, request, path, size=5):
                 'description':dc.get('description', ''),
                 'url':url,
                 'created':getDisplayTime(dc.get('modified', dc.get('created', ''))),
-                'creator':dc.get('creators', [])[0],
+                'creator':dc.get('creators', [''])[0],
             })
 
     return render(
@@ -86,7 +86,7 @@ def news_portlet(context, request, path, size=5):
 def blog_post_view(context, request):
     """ 单独一篇博客 """
     obj = context
-    dc = obj.metadata.get('dublin',{})
+    dc = obj.metadata
 
     result = {}
     result['url'] = obj.__name__

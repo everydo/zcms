@@ -62,15 +62,10 @@ contents/.frs/index.rst.json 首页内容设置
 描述了首页index.rst的信息，内容如下
  
     {
-    "main": {
       "left_col":".. include:: indexcol.rst",
       "right_col":"",
-      "contenttype": "Document"
-    },
-    "dublin": {
       "description": "",
       "title": "易度，带您进入互联网工作时代！"
-    }
     }
 
 说明：
@@ -80,21 +75,16 @@ contents/.frs/index.rst.json 首页内容设置
 "right_col"就是右列，设置方法如上。
 文件夹导航树：
 
-在.frs/products/metadata.xml有如下内容：
+在.frs/products.json有如下内容：
 
     {
-     "main": {
       "left_col": ".. navtree::\n   :root_depth: 2",
       "hidden_keys": [
           "img",
           "index.rst"
       ],
-      "contenttype": "Folder"
-     },
-     "dublin": {
       "description": "",
       "title": "产品信息"
-     }
     }
 
 说明：
@@ -114,9 +104,9 @@ reStructuredText写法入门介绍：http://karronqiu.googlepages.com/ReStructur
 
 TODO
 ================
-1. 继续简化json元数据，太复杂了！
-2. 提供更改内容的api（blog api？）
-3. 支持markdown
-4. 提供RSS
-5. 缓存，减少对文件系统的访问，减少metadata解析
-6. 生成的html，符合Bootstrap的规范
+1. 提供更改内容的api（blog api？）
+2. 支持markdown
+3. 提供RSS
+4. 缓存，减少对文件系统的访问，减少metadata解析
+5. 生成的html，符合Bootstrap的规范
+6. blog指令不知道为何不能工作，而且分页需要重写

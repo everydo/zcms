@@ -74,7 +74,7 @@ def get_sub_time_paths(folder, root_vpath):
 
     result = []
     for obj in folder.values(True, False):
-        dc = obj.metadata.get('dublin', {})
+        dc = obj.metadata
         if isinstance(obj, Folder):
             result.extend(get_sub_time_paths(obj, root_vpath))
         elif isinstance(obj, Document):

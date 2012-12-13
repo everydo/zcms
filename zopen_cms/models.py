@@ -28,13 +28,12 @@ class FRSAsset(object):
     @property
     def metadata(self):
         if self._md is None:
-            import pdb;  pdb.set_trace()
             self._md = self.frs.getMetadata(self.vpath) or {}
         return self._md
 
     @property
     def title(self):
-        return self.metadata.get('dublin', {}).get('title', '') or self.__name__
+        return self.metadata.get('title', '') or self.__name__
 
 
 class Folder(FRSAsset):
@@ -90,7 +89,7 @@ class Folder(FRSAsset):
         metadata = self.metadata
 
         if do_filter:
-            hidden_keys = metadata.get('main', {}).get('hidden_keys', [])
+            hidden_keys = metadata.get('hidden_keys', [])
             if hidden_keys:
                 keys = [key for key in keys if key not in hidden_keys]
                 # 通配后缀隐藏
@@ -100,20 +99,19 @@ class Folder(FRSAsset):
                         if key1.endswith(hkey[1:]):
                             keys.remove(key1)
             # 通配类型隐藏
-            hidden_types = metadata.get('main', {}).get('hidden_types', [])
+            hidden_types = metadata.get('hidden_types', [])
             if hidden_types:
                 tmp_keys = keys[:]
                 for type in hidden_types:
                     for key in tmp_keys:
                         sub_file = self.get_obj_by_subpath(key)
                         sub_metadata = sub_file.metadata
-                        sub_type = sub_metadata.get(
-                            'main', {}).get('contenttype', '')
+                        sub_type = sub_metadata.get('contenttype', '')
                         if type == sub_type:
                             keys.remove(key)
 
         if do_sort:
-            sorted_keys = metadata.get('main', {}).get('keys', [])
+            sorted_keys = metadata.get('keys', [])
             if sorted_keys:
                 sorted_keys.reverse()
                 for key in sorted_keys:

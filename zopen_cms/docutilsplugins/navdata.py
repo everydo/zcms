@@ -51,7 +51,7 @@ class NavTreeData(object):
         return [self.obj2Data(child) for child in current.values(True,True)]
 
     def obj2Data(self, obj, parent_paths=None):
-        dc = obj.metadata.get('dublin',{})
+        dc = obj.metadata
         name = obj.__name__
         title = dc.get('title', obj.__name__)
         icon_url = '/static/folder.gif'
