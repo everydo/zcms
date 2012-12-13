@@ -30,7 +30,7 @@ demo sites
 ===========
 - http://everydo.com
 - http://edodocs.com
-- http://pm.everydo.com
+- http://viewer.everydo.com
 - http://czug.org
 - http://zopen.cn
 
