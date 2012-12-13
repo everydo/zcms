@@ -110,3 +110,4 @@ TODO
 2. 提供更改内容的api（blog api？）
 3. 支持markdown
 4. 提供RSS
+5. 缓存，减少对文件系统的访问，减少metadata解析
