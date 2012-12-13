@@ -36,6 +36,17 @@ demo sites
 
    ./bin/pserve cms.ini
 
+配置文件
+====================
+app.ini
+
+定制皮肤
+==============
+调整themes/index.html
+
+内容
+============
+参看contents
 
 TODO
 ================
