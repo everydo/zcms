@@ -1,9 +1,6 @@
 {
-    "main": {
         "hidden_keys":[],
-	"keys":[]},
-   "dublin":{
+	"keys":[],
 	"title":"products",
 	"description":""
-   }
 }

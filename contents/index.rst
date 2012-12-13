@@ -8,3 +8,8 @@ hello world
 - edit cms.ini for configure
 
 Author http://everydo.com
+
+Changes
+==============
+.. news::
+   :path: blog
