@@ -1,7 +1,4 @@
-Next release
+2012.12.14
 
-  Forward compatibility with upcoming BFG release.
-
-0.1
-
-  Initial release.
+- 调整.json的位置，去除多余的文件夹
+- 调整.json的内容，简化
