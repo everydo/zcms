@@ -7,13 +7,8 @@ from pyramid.config import Configurator
 from zopen_frs import FRS
 from zopen_cms.models import Folder
 
-_pyramid_settings = None
-_single_root = ''
-
 
 def main(global_config, sites, **settings):
-    global _pyramid_settings
-    _pyramid_settings = settings.copy()
 
     # 根据配置，初始化文件库
     frs = FRS()

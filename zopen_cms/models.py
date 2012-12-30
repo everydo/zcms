@@ -7,6 +7,8 @@ import tempfile
 import os.path
 import stat
 import posixpath
+from pyramid.threadlocal import get_current_registry
+	
 
 def get_sub_time_paths(folder, root_vpath):
     """ 迭代查找整个子目录，找出所有的子文档的路径 """
@@ -177,7 +179,8 @@ class Folder(FRSAsset):
             return lag
 
         # try the cache first
-        if False and os.path.exists(cache_path):
+	is_debug = get_current_registry().settings.get('pyramid.debug_templates', False)
+        if not is_debug and os.path.exists(cache_path):
             rf = file(cache_path, 'r')
             txt_date = rf.readline().rstrip()
             if txt_date != '':
