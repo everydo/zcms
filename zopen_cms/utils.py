@@ -10,6 +10,7 @@ import chardet
 from string import Template
 from pyramid.response import Response
 from models import Folder, Document
+from pyramid.threadlocal import get_current_registry
 
 _templates_cache = {}
 
@@ -261,7 +262,9 @@ def render_content(context, request, content, **kw):
 def get_theme_template(theme_url):
     # cache template, TODO refresh cache
     global _templates_cache
-    if theme_url in _templates_cache:
+    is_debug = get_current_registry().settings.get('pyramid.debug_templates', False)
+
+    if not is_debug and theme_url in _templates_cache:
         return _templates_cache[theme_url]
 
     theme = urllib2.urlopen(theme_url).read()
