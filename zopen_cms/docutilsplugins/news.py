@@ -28,13 +28,13 @@ def news_directive(name, arguments, options, content, lineno, content_offset, bl
     context = state.document.settings.context
     request = state.document.settings.request
 
-    parsed = news_portlet(context, request, options['path'], options.get('size', 5))
+    parsed = news_portlet(context, request, options['path'], options.get('size', 5), options.get('class', ''))
     return [nodes.raw('', parsed, format='html')]
 
 news_directive.arguments = (0, 1, 0) 
 news_directive.has_content = 1
 news_directive.content = 1  
-news_directive.options = {'size': int, 'path': str}
+news_directive.options = {'size': int, 'path': str, 'class':str}
 
 directives.register_directive('news', news_directive)
 

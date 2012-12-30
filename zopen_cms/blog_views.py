@@ -50,7 +50,7 @@ def blog_view(context, request, size=5):
         )
     )
 
-def news_portlet(context, request, path, size=5):
+def news_portlet(context, request, path, size=5, klass='nav nav-list'):
     site = get_site(context)
     container = site.get_obj_by_subpath(path)
     container_url = resource_url(container, request)
@@ -61,7 +61,7 @@ def news_portlet(context, request, path, size=5):
 
     for subpath in blog_subpaths[:size]:
         obj = container.get_obj_by_subpath(subpath)
-        if obj is not None: continue
+        if obj is None: continue
 
         dc = obj.metadata
         url = resource_url(obj, request)
@@ -70,7 +70,7 @@ def news_portlet(context, request, path, size=5):
         posts.append("""<li><a href="%s">%s</a><span>%s</span></li>""" % \
               (url, dc.get('title', obj.__name__), getDisplayTime(created)))
 
-    return ''.join(posts)
+    return '<ul class="%s">%s</ul>' % (klass, ''.join(posts))
 
 @view_config(context=Document, name="blogpost.html")
 def blog_post_view(context, request):

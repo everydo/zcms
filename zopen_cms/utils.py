@@ -84,7 +84,7 @@ def rst2html(rst, path, context, request):
         'halt_level':6,
         'input_encoding':'UTF-8',
         'output_encoding':'UTF-8',
-        'initial_header_level':2,
+        'initial_header_level':1,
         'file_insertion_enabled':1,
         'raw_enabled':1,
         'writer_name':'html',
@@ -97,12 +97,13 @@ def rst2html(rst, path, context, request):
     # 表格生成的时候，会出现一个border=1，需要去除
     rst = rst.replace('border="1"', '')
 
-    return publish_parts(
+    parts = publish_parts(
         rst,
         source_path = path,
         writer = Writer(),
         settings_overrides = settings
-    )['html_body']
+    )
+    return parts['html_body']
 
 def render_html(document, request):
     data = document.data

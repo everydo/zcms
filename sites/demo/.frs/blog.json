@@ -1,6 +1,6 @@
 {
-        "hidden_keys":["index.rst", "*~"],
-	"keys":[],
 	"title":"Blog",
-	"description":""
+	"description":"",
+	"keys":[],
+        "hidden_keys":["index.rst", "*~"]
 }

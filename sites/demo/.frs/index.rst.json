@@ -1,8 +1,5 @@
 {
-	"upper_row":"upper_row.rst",
-        "theme":"home.html",
-        "hidden_keys":[],
-	"keys":[],
-	"title":"Front page",
-	"description":""
+"title":"Home",
+"description":"",
+"theme":"home.html"
 }
