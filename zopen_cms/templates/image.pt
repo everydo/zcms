@@ -5,5 +5,4 @@
 
     <img tal:attributes="src url" />
 
-    <div tal:replace="structure tabs" />
 </div>

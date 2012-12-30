@@ -8,9 +8,8 @@ from pyramid.renderers import render
 #from z3c.batching.batch import Batch
 
 from models import Document
-from views import render_tabs, render_cols
 from batch_views import batch_view as render_batch
-from utils import getDisplayTime, get_site, render_html
+from utils import getDisplayTime, get_site, render_html, render_content
 
 def blog_view(context, request, size=5):
     batch_start = request.params.get('b_start', '0')
@@ -99,8 +98,6 @@ def blog_post_view(context, request):
     img_url =  '/'.join(pachs[0:len(pachs)-2]) + '/img/'
     result['body'] = render_html(obj, request).replace('src="img/', 'src="%s' % img_url)
 
-    tabs = render_tabs(context,request)
-    cols = render_cols(context, request)
     idcomments_acct = request.registry.settings.get('idcomments_acct', '')
 
     title = dc.get('title', context.__name__)
@@ -114,27 +111,4 @@ def blog_post_view(context, request):
         )
     )
 
-    kw = dict(
-        title = title,
-        head = '<title>%s</title>' % title,
-        nav = tabs,
-        left_col = cols.get('left', ''),
-        right_col = cols.get('right', ''),
-        content = content,
-        description = description
-    )
-    request.environ['zopen_cms.kw'] = kw
-
-    return Response(headerlist=[('Content-type','text/html')]) 
-
-    # return render_to_response(
-    #     'templates/blogpost.pt',
-    #     dict(
-    #         title = dc.get('title', context.__name__),
-    #         result = result,
-    #         tabs = tabs,
-    #         cols = cols,
-    #         post_created = getDisplayTime(result['created']),
-    #         idcomments_acct = idcomments_acct,
-    #     )
-    # )
+    return render_content(context, request, content)

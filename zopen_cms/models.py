@@ -8,7 +8,22 @@ import os.path
 import stat
 import posixpath
 
-from utils import get_sub_time_paths
+def get_sub_time_paths(folder, root_vpath):
+    """ 迭代查找整个子目录，找出所有的子文档的路径 """
+
+    result = []
+    for obj in folder.values(True, False):
+        dc = obj.metadata
+        if isinstance(obj, Folder):
+            result.extend(get_sub_time_paths(obj, root_vpath))
+        elif isinstance(obj, Document):
+            result.append((
+                dc.get('modified', 
+                dc.get('created', '')),
+                obj.vpath.replace(root_vpath + '/', ''),
+            ))
+    return result
+
 
 
 class FRSAsset(object):

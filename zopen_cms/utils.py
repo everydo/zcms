@@ -3,6 +3,15 @@
 from datetime import datetime
 from docutils.core import publish_parts
 from docutils.writers.html4css1 import Writer
+from pyramid.url import resource_url
+import urllib2
+import os
+import chardet
+from string import Template
+from pyramid.response import Response
+from models import Folder, Document
+
+_templates_cache = {}
 
 def getDisplayTime(input_time, show_mode='localdate'):
     """ 人性化的时间显示: (支持时区转换)
@@ -68,23 +77,6 @@ def getDisplayTime(input_time, show_mode='localdate'):
             else:
                 return ('late', input_time.strftime('%Y-%m-%d'))
 
-def get_sub_time_paths(folder, root_vpath):
-    """ 迭代查找整个子目录，找出所有的子文档的路径 """
-    from models import Folder, Document
-
-    result = []
-    for obj in folder.values(True, False):
-        dc = obj.metadata
-        if isinstance(obj, Folder):
-            result.extend(get_sub_time_paths(obj, root_vpath))
-        elif isinstance(obj, Document):
-            result.append((
-                dc.get('modified', 
-                dc.get('created', '')),
-                obj.vpath.replace(root_vpath + '/', ''),
-            ))
-    return result
-
 def rst2html(rst, path, context, request):
     settings = {
         'halt_level':6,
@@ -136,3 +128,145 @@ def get_site(context):
     while context.vpath.find('/', 1) != -1:
         context = context.__parent__
     return context
+
+def render_tabs(site, context, request):
+    if site is None:
+        return ''
+
+    html_list = []
+    for tab in site.values(True, True):
+        class_str = 'plain'
+        if context.vpath.startswith(tab.vpath):
+            class_str = "selected"
+
+        tab_url = resource_url(tab, request)  # hack
+        if tab_url.endswith('.rst/'):
+            tab_url = tab_url[:-1]
+
+        html_list.append(
+            '<li id="nav-%s" class="%s"><a href="%s">%s</a></li>'
+            % (tab.__name__, class_str, tab_url, tab.title)
+        )
+
+    html = '<ul id="portal-globalnav">%s</ul>' % ''.join(html_list)
+    return html.decode('utf-8')
+
+def rst_col_path(name, context):
+    # 往上找左右列
+    if context.__name__ == '':
+        return '', ''
+    source_path = str(context.ospath)
+    if isinstance(context, Folder):
+        source_path = os.path.join(source_path, 'asf.rst')
+    dc_main = context.metadata
+    col = dc_main.get(name, '')
+    if col != '':
+        return col, source_path
+    if context.__parent__ is None:
+        return col, source_path
+    return rst_col_path(name, context.__parent__)
+
+
+def render_cols(context, request):
+    html_left = ''
+    html_right = ''
+    right_col_rst, right_col_path = rst_col_path('right_col', context)
+    left_col_rst, left_col_path = rst_col_path('left_col', context)
+    center_col_rst, center_col_path = rst_col_path('center_col', context)
+
+    if left_col_rst == '':
+        html_left = ''
+    else:
+        cvt_html = rst2html(left_col_rst, left_col_path, context, request)
+        if cvt_html.startswith('<td') or cvt_html.lstrip().startswith('<td'):
+            html_left = cvt_html
+        else:
+            html_left = """<td id="portal-column-one">
+                <div class="visualPadding">%s</div></td>
+                """ % rst2html(left_col_rst, left_col_path, context, request)
+
+    if right_col_rst == '':
+        html_right = ''
+    else:
+        cvt_html = rst2html(right_col_rst, right_col_path, context, request)
+        if cvt_html.startswith('<td') or cvt_html.lstrip().startswith('<td'):
+            html_right = cvt_html
+        else:
+            html_right = """<td id="portal-column-two">
+                <div class="visualPadding">%s</div></td>
+                """ % rst2html(right_col_rst, right_col_path, context, request)
+
+    if center_col_rst == '':
+        html_center = ''
+    else:
+        cvt_html = rst2html(center_col_rst, center_col_path, context, request)
+        html_center = '<div>%s</div>' % rst2html(
+            center_col_rst, center_col_path, context, request)
+
+    html_cols = {
+        'left': html_left,
+        'right': html_right,
+        'center': html_center
+    }
+    return html_cols
+
+def render_content(context, request, content, **kw):
+    # 获取模式，得到所有上级的属性
+
+
+    site = get_site(context)
+
+    site_title = site.title
+    dc = context.metadata
+
+
+    description = dc.get('description', '')
+    doc_title = dc.get('title', context.__name__)
+    site_title = doc_title + ' - ' + site_title
+
+    # 渲染总标签栏目
+    if context.vpath != '/':
+        tabs = render_tabs(site, context, request)
+    else:
+        tabs = ''
+
+    # 渲染左右列
+    html_cols = render_cols(context, request)
+
+    # 根据模版来渲染最终效果
+
+    kw = dict(
+        head='<title>%s</title>' % site_title,
+        nav=tabs,
+        left_col=html_cols.get('left', ''),
+        right_col=html_cols.get('right', ''),
+        content=content,
+        description=description
+    )
+
+    # 线上运行，多站点支持, support ngix
+    path_info = request.environ['PATH_INFO'].split('/', 2)
+    if len(path_info) > 2:
+        request.environ['HTTP_X_VHM_ROOT'] = '/' + site.__name__
+        request.environ['PATH_INFO'] = '/%s' % path_info[2]
+
+    theme = site.metadata.get('theme_url', 'http://localhost:6543/themes/bootstrap/index.html')
+    template = get_theme_template(theme)
+    output = template.substitute(kw).encode('utf8')
+    return Response(output, headerlist=[
+                ('Content-length', str(len(output))),
+                ('Content-type', 'text/html; charset=UTF-8')
+	    ])
+
+def get_theme_template(theme_url):
+    # cache template, TODO refresh cache
+    global _templates_cache
+    if theme_url in _templates_cache:
+        return _templates_cache[theme_url]
+
+    theme = urllib2.urlopen(theme_url).read()
+    text_encoding = chardet.detect(theme)['encoding']
+    theme = theme.decode(text_encoding)
+    template = Template(theme)
+    _templates_cache[theme_url] = template
+    return template

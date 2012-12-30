@@ -4,6 +4,5 @@
     <p class="contentDescription" tal:condition="description" tal:content="description"> description </p>
 
     <div tal:replace="structure html"> content </div>
-    <div tal:replace="structure html_cols.get('center','')"> like sitemap </div>
 
 </div>
