@@ -45,7 +45,7 @@ demo sites
 启动服务
 =======================
 
-    ./bin/pserve cms.ini
+    ./bin/pserve production.ini
 
 制作新站点
 =================
