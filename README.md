@@ -49,15 +49,15 @@ demo sites
 
 制作新站点
 =================
-- 配置文件： cms.ini
-- 定制皮肤：调整themes/index.html
-- 网站内容：参看contents
+- 网站内容, 参看: sites/demo
+- 默认皮肤 themes/bootstrap/index.html
+- 可在metadata.json中自定义 theme_url
 
-contents/.frs/metadata.json
+demo/.frs/metadata.json
 --------------------------------------------
 网站的整体配置，导航数的顺序和显示也在这里配置
 
-contents/.frs/index.rst.json 首页内容设置
+demo/.frs/index.rst.json 首页内容设置
 -------------------------------------------------
 描述了首页index.rst的信息，内容如下
  
