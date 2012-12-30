@@ -31,6 +31,7 @@ requires = [
     'docutils',
     'chardet',
     'WebHelpers',
+    'Markdown'
 ]
 
 setup(

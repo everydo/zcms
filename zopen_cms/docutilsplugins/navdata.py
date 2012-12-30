@@ -54,7 +54,6 @@ class NavTreeData(object):
         dc = obj.metadata
         name = obj.__name__
         title = dc.get('title', obj.__name__)
-        icon_url = '/static/folder.gif'
         view = '/view.html'
 
         url = resource_url(obj, self.request)
@@ -64,18 +63,9 @@ class NavTreeData(object):
         else:
             url = url[:-1]
 
-        if isinstance(obj, File):
-            icon_url = '/static/file.gif'
-        if isinstance(obj, Document):
-            icon_url = '/static/document.gif'
-            view = ''
-        if isinstance(obj, Image):
-            icon_url = '/static/image.gif'
         data = {
             'name':name,
             'url':url,
-            'view':view,
-            'icon':icon_url,
             'title':title,
             'children':[],
             'flag':''

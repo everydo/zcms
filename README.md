@@ -47,15 +47,16 @@ demo sites
 
     ./bin/pserve production.ini
 
-制作新站点
-=================
-- 网站内容, 参看: sites/demo
-- 默认皮肤 themes/bootstrap/index.html
+制作站点: sites/demo
+============================
 - 可在metadata.json中自定义 theme_url
 
-demo/.frs/metadata.json
+站点属性 demo/.frs/metadata.json
 --------------------------------------------
-网站的整体配置，导航数的顺序和显示也在这里配置
+网站的整体配置，导航数的顺序和显示也在这里配置:
+
+- theme_base: 皮肤存放的url基准地址, http://localhost:6543/themes/bootstrap, 如果需要换肤，改变这个就行
+- theme_default: 默认的皮肤, defualt.html
 
 demo/.frs/index.rst.json 首页内容设置
 -------------------------------------------------
@@ -106,9 +107,5 @@ TODO
 ================
 0. 和github集成，github修改后直接更新网站
 1. 提供更改内容的api（blog api？）
-2. 支持markdown
-3. 提供RSS
-4. 缓存，减少对文件系统的访问，减少metadata解析
-5. 生成的html，符合Bootstrap的规范
-6. blog指令不知道为何不能工作，而且分页需要重写
-
+2. 提供RSS
+3. 缓存，减少对文件系统的访问，减少metadata解析

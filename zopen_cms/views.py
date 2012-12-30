@@ -6,19 +6,10 @@ import mimetypes
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render, render_to_response
+from pyramid.response import Response
 
 from utils import render_html, render_content
 from models import Folder, Document, Image, File
-
-
-
-
-# NOTE(Prim): 通用组件
-#   - head
-#   - content
-#   - left/right_col
-#   - nav
-
 
 @view_config(context=Folder)
 def folder_view(context, request):

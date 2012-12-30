@@ -8,6 +8,7 @@
 
     .. navtree:: asdfasdfasd
        :root_depth: 2
+       :class: nav nav-pills nav-stacked
 
 参考： 
 http://docutils.sourceforge.net/docs/howto/rst-directives.html
@@ -21,29 +22,32 @@ navtree_directive.arguments = (0, 1, 0)
 """
 from docutils import nodes
 from docutils.parsers.rst import directives
-
 from navdata import NavTreeData
-
-from config import nav_root_template, nav_item_template
 from zopen_cms.models import Folder
+from string import Template
+
+nav_root_template = Template(r""" <ul class="${ul_class}"> ${nav_items} </ul> """)
+
+nav_item_template = Template(r"""
+<li class="${class_str}"> <a href="${node_url}"> ${node_title} </a> ${children_str} </li>""")
 
 def navtree_directive(name, arguments, options, content, lineno,
                        content_offset, block_text, state, state_machine):
     context = state.document.settings.context
     request = state.document.settings.request
 
-    parsed = nav_tree(context, request, options.get('root_depth', 2))
+    parsed = nav_tree(context, request, options.get('root_depth', 2), options.get('class', 'nav nav-list'))
     return [nodes.raw('', parsed, format='html')]
 
-navtree_directive.arguments = (0, 1, 0) 
+navtree_directive.arguments = (0, 1, 0)
 navtree_directive.has_content = 1
-navtree_directive.content = 1  
-navtree_directive.options = {'root_depth': int}
+navtree_directive.content = 1 
+navtree_directive.options = {'root_depth': int, 'class':str}
 
 directives.register_directive('navtree', navtree_directive)
 
 # 生成navtree
-def nav_tree(context, request, root_depth):
+def nav_tree(context, request, root_depth, klass):
     """render navtree structure, root_depth from root"""
     navtree = NavTreeData(context,request)
     if navtree == None:
@@ -76,6 +80,7 @@ def nav_tree(context, request, root_depth):
         dept += 1
     nav_items = ''.join(items)
     return nav_root_template.substitute(tree=tree,\
+		             ul_class=klass,
                              root_url=root_url,\
                              root_title=root_title,\
                              nav_items=nav_items)
@@ -83,17 +88,16 @@ def nav_tree(context, request, root_depth):
 def renderNode(node, dept=0):
     """Supplies node for nav_tree"""
     # 初始化
-    class_str = 'node'
     children_str = ''
-    a_class_str = ''
 
-    if node.has_key('flag'):
-        if node['flag']=='current':
-            class_str += " selected"
-            a_class_str += 'navTreeCurrentItem'
+    if node.get('flag', '')=='current':
+        class_str = " active"
+    else:
+        class_str = ''
+
     if node['children'] != None and node['children']!=[]:
         class_str += ' loaded expanded'
-        children_str += """<ul class="navTree navTreeLevel%s">""" % str(dept+1)
+        children_str += """<ul class="nav nav-list">""" 
         # 最多显示30个节点
         for child_node in node['children'][:30]:
             children_str += renderNode(child_node, dept+1)
@@ -104,10 +108,6 @@ def renderNode(node, dept=0):
     return nav_item_template.substitute(
         class_str = class_str,
         node_url = node['url'],
-        icon_src = node['icon'],
-        view_name = node.get('view', '/@@view.html'),
-        a_class_str = a_class_str,
-        node_name = node['name'],
         node_title = node['title'],
         children_str = children_str
     )

@@ -11,6 +11,7 @@ from string import Template
 from pyramid.response import Response
 from models import Folder, Document
 from pyramid.threadlocal import get_current_registry
+import markdown
 
 _templates_cache = {}
 
@@ -103,27 +104,31 @@ def rst2html(rst, path, context, request):
         settings_overrides = settings
     )['html_body']
 
-def render_html(frs_file, request):
-    data = frs_file.data
+def render_html(document, request):
+    data = document.data
 
     lstrip_data = data.lstrip()
     # windows会自动增加utf8的标识字
     if lstrip_data[0:3]== '\xef\xbb\xbf':
         lstrip_data = lstrip_data[3:]
 
-    # 判断文件内容是否为html
-    # 文件内容不是html时，认为内容为rst文本
-    if lstrip_data and lstrip_data[0] == '<':
+    if document.__name__.endswith('.rst'):
+        # 判断文件内容是否为html
+        # 文件内容不是html时，认为内容为rst文本
+        if lstrip_data and lstrip_data[0] == '<':
+            return data
+
+        # 不显示的标题区域，标题在zpt里面独立处理了
+        if lstrip_data.startswith('======'):
+            splitted_data = lstrip_data.split('\n', 3)
+            data = splitted_data[-1]
+            # title = splitted_data[1]
+        ospath = document.ospath
+        return rst2html(data, str(ospath), document, request)
+    elif document.__name__.endswith('.html'):
         return data
-
-    # 不显示的标题区域，标题在zpt里面独立处理了
-    if lstrip_data.startswith('======'):
-        splitted_data = lstrip_data.split('\n', 3)
-        data = splitted_data[-1]
-        # title = splitted_data[1]
-
-    ospath = frs_file.ospath
-    return rst2html(data, str(ospath), frs_file, request)
+    elif document.__name__.endswith('.md'):
+        return ''.join(markdown.Markdown().convert(data))
 
 def get_site(context):
     while context.vpath.find('/', 1) != -1:
@@ -136,20 +141,20 @@ def render_sections(site, context, request):
 
     html_list = []
     for tab in site.values(True, True):
-        class_str = 'plain'
+        class_str = ''
         if context.vpath.startswith(tab.vpath):
-            class_str = "selected"
+            class_str = "active"
 
         tab_url = resource_url(tab, request)  # hack
         if tab_url.endswith('.rst/'):
             tab_url = tab_url[:-1]
 
         html_list.append(
-            '<li id="nav-%s" class="%s"><a href="%s">%s</a></li>'
-            % (tab.__name__, class_str, tab_url, tab.title)
+            '<li class="%s"><a href="%s">%s</a></li>'
+            % (class_str, tab_url, tab.title)
         )
 
-    html = '<ul id="portal-globalnav">%s</ul>' % ''.join(html_list)
+    html = ''.join(html_list)
     return html.decode('utf-8')
 
 def rst_col_path(name, context):
@@ -158,68 +163,53 @@ def rst_col_path(name, context):
         return '', ''
     source_path = str(context.ospath)
     if isinstance(context, Folder):
-        source_path = os.path.join(source_path, 'asf.rst')
-    dc_main = context.metadata
-    col = dc_main.get(name, '')
-    if col != '':
-        return col, source_path
+        rst_path = os.path.join(source_path, name + '.rst')
+	if os.path.exists(rst_path):
+            col = open(rst_path).read()
+	    return col, source_path
+    else:
+        file_name = context.metadata.get(name, '')
+	if file_name:
+            rst_path = os.path.join(os.path.dirname(source_path), file_name)
+            col = open(rst_path).read()
+	    return col, source_path
+
     if context.__parent__ is None:
-        return col, source_path
+        return '', source_path
     return rst_col_path(name, context.__parent__)
 
 
-def render_cols(context, request):
-    html_left = ''
-    html_right = ''
-    right_col_rst, right_col_path = rst_col_path('right_col', context)
+def render_slots(context, request):
+    upper_rst, upper_path = rst_col_path('upper_row', context)
+    if upper_rst != '':
+        html_upper = rst2html(upper_rst, upper_path, context, request)
+    else:
+        html_upper = ''
+
     left_col_rst, left_col_path = rst_col_path('left_col', context)
-    center_col_rst, center_col_path = rst_col_path('center_col', context)
-
-    if left_col_rst == '':
+    if left_col_rst != '':
+        html_left = rst2html(left_col_rst, left_col_path, context, request)
+    else:
         html_left = ''
-    else:
-        cvt_html = rst2html(left_col_rst, left_col_path, context, request)
-        if cvt_html.startswith('<td') or cvt_html.lstrip().startswith('<td'):
-            html_left = cvt_html
-        else:
-            html_left = """<td id="portal-column-one">
-                <div class="visualPadding">%s</div></td>
-                """ % rst2html(left_col_rst, left_col_path, context, request)
 
-    if right_col_rst == '':
+    right_col_rst, right_col_path = rst_col_path('right_col', context)
+    if right_col_rst != '':
+        html_right = rst2html(right_col_rst, right_col_path, context, request)
+    else:
         html_right = ''
-    else:
-        cvt_html = rst2html(right_col_rst, right_col_path, context, request)
-        if cvt_html.startswith('<td') or cvt_html.lstrip().startswith('<td'):
-            html_right = cvt_html
-        else:
-            html_right = """<td id="portal-column-two">
-                <div class="visualPadding">%s</div></td>
-                """ % rst2html(right_col_rst, right_col_path, context, request)
 
-    if center_col_rst == '':
-        html_center = ''
-    else:
-        cvt_html = rst2html(center_col_rst, center_col_path, context, request)
-        html_center = '<div>%s</div>' % rst2html(
-            center_col_rst, center_col_path, context, request)
-
-    html_cols = {
-        'left': html_left,
-        'right': html_right,
-        'center': html_center
-    }
-    return html_cols
+    return { 'left_col': html_left,
+             'right_col': html_right,
+             'upper_row': html_upper
+           }
 
 def render_content(context, request, content, **kw):
     # 获取模式，得到所有上级的属性
-
 
     site = get_site(context)
 
     site_title = site.title
     dc = context.metadata
-
 
     description = dc.get('description', '')
     doc_title = dc.get('title', context.__name__)
@@ -232,18 +222,15 @@ def render_content(context, request, content, **kw):
         sections = ''
 
     # 渲染左右列
-    html_cols = render_cols(context, request)
+    kw = render_slots(context, request)
 
     # 根据模版来渲染最终效果
-
-    kw = dict(
-        head = '<title>%s</title>' % site_title,
+    kw.update( dict(
+        title = site_title,
         nav = sections,
-        left_col = html_cols.get('left', ''),
-        right_col = html_cols.get('right', ''),
         content = content,
         description = description
-    )
+    ))
 
     # 线上运行，多站点支持, support ngix
     path_info = request.environ['PATH_INFO'].split('/', 2)
@@ -251,8 +238,10 @@ def render_content(context, request, content, **kw):
         request.environ['HTTP_X_VHM_ROOT'] = '/' + site.__name__
         request.environ['PATH_INFO'] = '/%s' % path_info[2]
 
-    theme = site.metadata.get('theme_url', 'http://localhost:6543/themes/bootstrap/index.html')
-    template = get_theme_template(theme)
+    theme_base = site.metadata.get('theme_base', 'http://localhost:6543/themes/bootstrap/')
+    theme_default = site.metadata.get('theme_default', 'default.html')
+    theme = context.metadata.get('theme', theme_default)
+    template = get_theme_template(theme_base + theme)
     output = template.substitute(kw).encode('utf8')
     return Response(output, headerlist=[
                 ('Content-length', str(len(output))),

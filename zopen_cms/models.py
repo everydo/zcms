@@ -80,7 +80,7 @@ class Folder(FRSAsset):
             ext = posixpath.splitext(path)[1].lower()
             if ext in ['.gif', '.bmp', '.jpg', '.jpeg', '.png']:
                 obj = Image(self.frs, path)
-            elif ext in ['.html', '.htm', '.rst']:
+            elif ext in ['.html', '.htm', '.rst', '.md']:
                 obj = Document(self.frs, path)
             else:
                 obj = File(self.frs, path)
@@ -107,6 +107,7 @@ class Folder(FRSAsset):
 
         if do_filter:
             hidden_keys = metadata.get('hidden_keys', [])
+	    hidden_keys.extend(['left_col.rst', 'right_col.rst', 'upper_row.rst'])
             if hidden_keys:
                 keys = [key for key in keys if key not in hidden_keys]
                 # 通配后缀隐藏
@@ -257,6 +258,8 @@ class File(FRSAsset):
             return 'text/html'
         elif self.vpath.endswith('rst'):
             return 'text/rst'
+        elif self.vpath.endswith('md'):
+            return 'text/markdown'
         else:
             return 'text/plain'
 

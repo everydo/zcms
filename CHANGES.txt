@@ -1,11 +1,10 @@
-0.1
---------
-2012.12.30
+v0.5 - 2012.12.30
 
 - 去除wsgi Theme Filter, 简化
 - 去除对themes文件夹的依赖，在站点metadata.json中可设置theme_url里面是皮肤的url地址，默认是自带的bootstrap风格皮肤
+- 支持markdown
 
-2012.12.14
+v0.1 - 2012.12.14
 
 - 调整.json的位置，去除多余的文件夹
 - 调整.json的内容，简化
