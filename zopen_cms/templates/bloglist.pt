@@ -1,5 +1,4 @@
-<div class="blogPost" tal:repeat="post result">
-    <div class="postItem">
+<section class="blog-post" tal:repeat="post result">
         <h2><a tal:attributes="href string:${post.url}/@@blogpost.html">${post.title}</a></h2>
         <p class="discreet">
             <span tal:replace="post.creator">zhangshan</span>
@@ -10,7 +9,6 @@
         <p class="postActions">
             <a tal:attributes="href string:${post.url}/@@blogpost.html#postcomment">评论...</a>
         </p>
-    </div>
-</div>
+</section>
 
 <div tal:replace="structure batch" />

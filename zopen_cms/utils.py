@@ -119,10 +119,6 @@ def render_html(document, request):
             return data
 
         # 不显示的标题区域，标题在zpt里面独立处理了
-        if lstrip_data.startswith('======'):
-            splitted_data = lstrip_data.split('\n', 3)
-            data = splitted_data[-1]
-            # title = splitted_data[1]
         ospath = document.ospath
         return rst2html(data, str(ospath), document, request)
     elif document.__name__.endswith('.html'):

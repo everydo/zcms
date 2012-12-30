@@ -1,8 +1,0 @@
-<div id="main" xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:tal="http://xml.zope.org/namespaces/tal">
-    <h1 tal:condition="title" tal:content="title"> title </h1>
-    <p class="contentDescription" tal:condition="description" tal:content="description"> description </p>
-
-    <div tal:replace="structure html"> content </div>
-
-</div>

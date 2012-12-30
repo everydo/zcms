@@ -61,26 +61,16 @@ def news_portlet(context, request, path, size=5):
 
     for subpath in blog_subpaths[:size]:
         obj = container.get_obj_by_subpath(subpath)
-        if obj is not None:
-            dc = obj.metadata
-            url = resource_url(obj, request)
-            if url.endswith('/'): url = url[:-1]
-            posts.append({
-                'title':dc.get('title', obj.__name__),
-                'description':dc.get('description', ''),
-                'url':url,
-                'created':getDisplayTime(dc.get('modified', dc.get('created', ''))),
-                'creator':dc.get('creators', [''])[0],
-            })
+        if obj is not None: continue
 
-    return render(
-        'templates/portlet_news.pt', 
-        dict(
-            title = title, 
-            result = posts,
-            container_url = container_url
-        )
-    )
+        dc = obj.metadata
+        url = resource_url(obj, request)
+        if url.endswith('/'): url = url[:-1]
+        created = dc.get('modified', dc.get('created', ''))
+        posts.append("""<li><a href="%s">%s</a><span>%s</span></li>""" % \
+              (url, dc.get('title', obj.__name__), getDisplayTime(created)))
+
+    return ''.join(posts)
 
 @view_config(context=Document, name="blogpost.html")
 def blog_post_view(context, request):

@@ -58,20 +58,7 @@ def folder_view(context, request):
 @view_config(context=Document)
 def document_view(context, request):
     html = render_html(context, request)
-
-    dc = context.metadata
-    description = dc.get('description', '')
-    doc_title = dc.get('title', '')
-
-    content = render(
-        'templates/document_main.pt',
-        dict(
-            title=doc_title,
-            description=description,
-            html=html,
-        )
-    )
-    return render_content(context, request, content)
+    return render_content(context, request, html)
 
 @view_config(context=File, name="view.html")
 def file_view(context, request):
