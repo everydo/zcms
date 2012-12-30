@@ -177,7 +177,7 @@ class Folder(FRSAsset):
             return lag
 
         # try the cache first
-        if os.path.exists(cache_path):
+        if False and os.path.exists(cache_path):
             rf = file(cache_path, 'r')
             txt_date = rf.readline().rstrip()
             if txt_date != '':

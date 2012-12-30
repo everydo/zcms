@@ -8,20 +8,21 @@ from pyramid.renderers import render
 #from z3c.batching.batch import Batch
 
 from models import Document
-from batch_views import batch_view as render_batch
+from webhelpers import paginate
 from utils import getDisplayTime, get_site, render_html, render_content
 
 def blog_view(context, request, size=5):
-    batch_start = request.params.get('b_start', '0')
+    current_page = request.params.get('page', '0')
     # XXX hack, 很奇怪会附加一个/
-    if batch_start.endswith('/'):
-        batch_start = batch_start[:-1]
-    batch_start = int(batch_start)
-    posts = []
-    #blog_subpaths = Batch(context.get_recent_file_subpaths(), start=batch_start, size=size)
+    if current_page.endswith('/'):
+        current_page = current_page[:-1]
+    current_page = int(current_page)
+    page_url = paginate.PageURL_WebOb(request)
     blog_subpaths = context.get_recent_file_subpaths()
+    blog_page = paginate.Page(blog_subpaths, current_page, items_per_page=size, url=page_url)
 
-    for subpath in blog_subpaths:
+    posts = []
+    for subpath in blog_page:
         obj = context.get_obj_by_subpath(subpath)
         if obj is not None:
             url = '/'.join(obj.vpath.split('/')[2:])
@@ -40,7 +41,7 @@ def blog_view(context, request, size=5):
                 'body':converted_html,
             })
 
-    batch = '' # render_batch(blog_subpaths, request)
+    batch = blog_page.pager()
     return render(
         'templates/bloglist.pt',
         dict(

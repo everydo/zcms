@@ -30,6 +30,7 @@ requires = [
     'pygments',
     'docutils',
     'chardet',
+    'WebHelpers',
 ]
 
 setup(

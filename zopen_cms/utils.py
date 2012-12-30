@@ -129,7 +129,7 @@ def get_site(context):
         context = context.__parent__
     return context
 
-def render_tabs(site, context, request):
+def render_sections(site, context, request):
     if site is None:
         return ''
 
@@ -226,9 +226,9 @@ def render_content(context, request, content, **kw):
 
     # 渲染总标签栏目
     if context.vpath != '/':
-        tabs = render_tabs(site, context, request)
+        sections = render_sections(site, context, request)
     else:
-        tabs = ''
+        sections = ''
 
     # 渲染左右列
     html_cols = render_cols(context, request)
@@ -236,12 +236,12 @@ def render_content(context, request, content, **kw):
     # 根据模版来渲染最终效果
 
     kw = dict(
-        head='<title>%s</title>' % site_title,
-        nav=tabs,
-        left_col=html_cols.get('left', ''),
-        right_col=html_cols.get('right', ''),
-        content=content,
-        description=description
+        head = '<title>%s</title>' % site_title,
+        nav = sections,
+        left_col = html_cols.get('left', ''),
+        right_col = html_cols.get('right', ''),
+        content = content,
+        description = description
     )
 
     # 线上运行，多站点支持, support ngix

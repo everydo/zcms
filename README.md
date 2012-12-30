@@ -104,9 +104,11 @@ reStructuredText写法入门介绍：http://karronqiu.googlepages.com/ReStructur
 
 TODO
 ================
+0. 和github集成，github修改后直接更新网站
 1. 提供更改内容的api（blog api？）
 2. 支持markdown
 3. 提供RSS
 4. 缓存，减少对文件系统的访问，减少metadata解析
 5. 生成的html，符合Bootstrap的规范
 6. blog指令不知道为何不能工作，而且分页需要重写
+
