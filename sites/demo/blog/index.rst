@@ -2,4 +2,4 @@
 blog
 ===========
 .. blogs::
-   :size: 5
+   :size: 20
