@@ -22,9 +22,14 @@ zcms : 基于文件系统的超轻CMS
 扩展的reST指令包括:
 
      .. news::
-     .. blog::
-     .. nav_tree::
+        :size: 5
+        :path: blog
 
+     .. blog::
+        :path: blog
+
+     .. nav_tree::
+        :root_depth: 2
 
 demo sites
 ===========
@@ -63,7 +68,7 @@ demo/.frs/index.rst.json 首页内容设置
 描述了首页index.rst的信息，内容如下
  
     {
-      "left_col":".. include:: indexcol.rst",
+      "left_col":"indexcol.rst",
       "right_col":"",
       "description": "",
       "title": "易度，带您进入互联网工作时代！"
@@ -71,7 +76,7 @@ demo/.frs/index.rst.json 首页内容设置
 
 说明：
 
-在"main"下面有一个"left_col"，它指定了左列，".. include:: indexcol.rst"指的是左列内容包含在index.rst所属目录下的indexcol.rst中。
+在"main"下面有一个"left_col"，它指定了左列，"indexcol.rst"指的是左列内容包含在index.rst所属目录下的indexcol.rst中。
 在indexcol.rst中通过".. raw:: html"指令加入边栏html代码。
 "right_col"就是右列，设置方法如上。
 文件夹导航树：
@@ -79,7 +84,6 @@ demo/.frs/index.rst.json 首页内容设置
 在.frs/products.json有如下内容：
 
     {
-      "left_col": ".. navtree::\n   :root_depth: 2",
       "hidden_keys": [
           "img",
           "index.rst"
