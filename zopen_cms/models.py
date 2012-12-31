@@ -8,6 +8,7 @@ import os.path
 import stat
 import posixpath
 from pyramid.threadlocal import get_current_registry
+import fnmatch
 
 def get_sub_time_paths(folder, root_vpath):
     """ 迭代查找整个子目录，找出所有的子文档的路径 """
@@ -110,15 +111,10 @@ class Folder(FRSAsset):
 
         if do_filter:
             hidden_keys = metadata.get('hide', [])
-	    hidden_keys.extend(['_config.yaml', '_left.rst', '_right.rst', '_upper.rst'])
-            if hidden_keys:
-                keys = [key for key in keys if key not in hidden_keys]
-                # 通配后缀隐藏
-                tmp_keys = keys[:]
-                for hkey in [key for key in hidden_keys if key.startswith('*')]:
-                    for key1 in tmp_keys:
-                        if key1.endswith(hkey[1:]):
-                            keys.remove(key1)
+	    hidden_keys.extend(['_*'])
+            for key in hidden_keys:
+                for _key in fnmatch.filter(keys, key):
+                    keys.remove(_key)
 
         if do_sort:
             sorted_keys = metadata.get('order', [])

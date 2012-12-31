@@ -8,7 +8,7 @@ from types import UnicodeType
 import yaml
 import time
 import sys
-
+import fnmatch
 
 FS_CHARSET = sys.getfilesystemencoding()
 
