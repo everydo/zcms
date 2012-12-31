@@ -151,8 +151,7 @@ def render_sections(site, context, request):
             % (class_str, tab_url, tab.title)
         )
 
-    html = ''.join(html_list)
-    return html.decode('utf-8')
+    return ''.join(html_list)
 
 def rst_col_path(name, context):
     # 往上找左右列
@@ -205,12 +204,10 @@ def render_content(context, request, content, **kw):
 
     site = get_site(context)
 
-    site_title = site.title
     dc = context.metadata
 
     description = dc.get('description', '')
-    doc_title = dc.get('title', context.__name__)
-    site_title = doc_title + ' - ' + site_title
+    site_title = context.title + ' - ' + site.title
 
     # 渲染总标签栏目
     if context.vpath != '/':

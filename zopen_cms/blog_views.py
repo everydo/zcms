@@ -33,7 +33,7 @@ def blog_view(context, request, size=5):
                 'src="%s/%s/../img/' % (request.application_url, url)
             )
             posts.append({
-                'title':dc.get('title', obj.__name__),
+                'title':obj.title,
                 'description':dc.get('description', ''),
                 'url':subpath,
                 'created':getDisplayTime(dc.get('modified', dc.get('created', ''))),
@@ -68,7 +68,7 @@ def news_portlet(context, request, path, size=5, klass='nav nav-list'):
         if url.endswith('/'): url = url[:-1]
         created = dc.get('modified', dc.get('created', ''))
         posts.append("""<li><a href="%s">%s</a><span>%s</span></li>""" % \
-              (url, dc.get('title', obj.__name__), getDisplayTime(created)))
+              (url, obj.title, getDisplayTime(created)))
 
     return '<ul class="%s">%s</ul>' % (klass, ''.join(posts))
 
@@ -80,7 +80,7 @@ def blog_post_view(context, request):
 
     result = {}
     result['url'] = obj.__name__
-    result['title'] = dc.get('title', obj.__name__)
+    result['title'] = obj.title
     result['description'] = dc.get('description', '')
     result['created'] = dc.get('modified', dc.get('created', ''))
     result['creator'] = dc.get('creators', [])[0]
@@ -91,7 +91,7 @@ def blog_post_view(context, request):
 
     idcomments_acct = request.registry.settings.get('idcomments_acct', '')
 
-    title = dc.get('title', context.__name__)
+    title = context.title
     description = dc.get('description', '')
     content = render(
         'templates/blogpost_main.pt',

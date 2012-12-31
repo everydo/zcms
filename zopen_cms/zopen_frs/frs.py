@@ -159,14 +159,14 @@ class FRS(CacheMixin):
             raise OSError(vPath)
         return os.path.join(toppath, *parts[2:])
 
-    def metadatapath(self, vpath):
+    def metadatapath(self, vpath, info='json'):
         """ It is another kind of joinpath, which returns path in the .frs folder.
         """
         dirname = self.dirname(vpath)
         if dirname != '/':
-            return self.joinpath(self.dirname(vpath), self.dotfrs, self.basename(vpath) + '.json')
+            return self.joinpath(self.dirname(vpath), self.dotfrs, self.basename(vpath) + '.' + info)
         else:
-            return self.joinpath(vpath, self.dotfrs, 'metadata.json')
+            return self.joinpath(vpath, self.dotfrs, 'meta.' + info)
 
     def exists(self, vPath):
         try:

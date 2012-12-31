@@ -3,6 +3,6 @@
 	"description":"a demo site",
 	"theme_base":"http://localhost:6543/themes/bootstrap/",
 	"theme_default":"default.html",
-	"keys":["index.rst", "products", "about"],
-        "hidden_keys":["*~"]
+	"order":["index.rst", "tour", "blog", "about.rst"],
+        "hide":["*~"]
 }

@@ -50,8 +50,9 @@ class FRSAsset(object):
 
     @property
     def title(self):
-        return self.metadata.get('title', '') or self.__name__
-
+        title = self.metadata.get('title', '')
+	if title: return title
+	return self.__name__.split('.', 1)[0].replace('-', ' ')
 
 class Folder(FRSAsset):
 

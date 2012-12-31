@@ -53,14 +53,11 @@ class NavTreeData(object):
     def obj2Data(self, obj, parent_paths=None):
         dc = obj.metadata
         name = obj.__name__
-        title = dc.get('title', obj.__name__)
-        view = '/view.html'
+        title = obj.title
 
         url = resource_url(obj, self.request)
 
-        if isinstance(obj, Folder):
-            view = ''
-        else:
+        if not isinstance(obj, Folder):
             url = url[:-1]
 
         data = {

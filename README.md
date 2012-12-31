@@ -2,6 +2,8 @@
 zcms : 基于文件系统的超轻CMS
 ================================
 
+*大量简化中，请稍后使用*
+
 厌倦了各种复杂的内容管理系统？皮肤？数据库... 你说sphinx，太geek、太死板了吧？
 
 作为曾经在CMS系统征战多年的笔者，坚信简单的力量，zcms正是此概念之下的产物：
@@ -19,8 +21,8 @@ zcms : 基于文件系统的超轻CMS
 - 网站内容的编辑人员，也可以做动态页面了！
 - 做皮肤的人，不需要麻烦开发人员协助了
 
-扩展的reST指令包括:
-
+扩展的reST指令
+=====================
      .. news::
         :size: 5
         :path: blog
@@ -30,6 +32,8 @@ zcms : 基于文件系统的超轻CMS
 
      .. nav_tree::
         :root_depth: 2
+
+root_depth: 表示从第二级文件夹作为导航树的根
 
 demo sites
 ===========
@@ -54,58 +58,49 @@ demo sites
 
 制作站点: sites/demo
 ============================
-- 可在metadata.json中自定义 theme_url
+站点数据结构
+--------------------
+TODO：吸收jekell的yaml配置方法，简化使用
 
-站点属性 demo/.frs/metadata.json
+     _config.yaml
+     index.rst
+     _index_upper.rst
+     tour/
+	_config.yaml
+        _upper.rst
+        _left.rst
+	index.rst
+	install.rst
+	sites.rst
+     blog/
+        _config.yaml
+        _upper.rst
+        _left.rst
+	index.rst
+        post01.rst
+        post02.rst
+     about.rst
+     _about_upper.rst
+
+配置站点属性 _config.yaml
 --------------------------------------------
 网站的整体配置，导航数的顺序和显示也在这里配置:
 
-- theme_base: 皮肤存放的url基准地址, http://localhost:6543/themes/bootstrap, 如果需要换肤，改变这个就行
-- theme_default: 默认的皮肤, defualt.html
+      theme_base: http://localhost:6543/themes/bootstrap # 皮肤存放的url基准地址, 如果需要换肤，改变这个就行
+      theme_default: defualt.html # 默认的皮肤
+      hidden: img                 # 隐藏的内容, 不在导航树中显示
+          index.rst
+      ordered:                    # 固定排序
 
-demo/.frs/index.rst.json 首页内容设置
+首页内容yaml设置
 -------------------------------------------------
 描述了首页index.rst的信息，内容如下
  
-    {
-      "left_col":"indexcol.rst",
-      "right_col":"",
-      "description": "",
-      "title": "易度，带您进入互联网工作时代！"
-    }
-
-说明：
-
-在"main"下面有一个"left_col"，它指定了左列，"indexcol.rst"指的是左列内容包含在index.rst所属目录下的indexcol.rst中。
-在indexcol.rst中通过".. raw:: html"指令加入边栏html代码。
-"right_col"就是右列，设置方法如上。
-文件夹导航树：
-
-在.frs/products.json有如下内容：
-
-    {
-      "hidden_keys": [
-          "img",
-          "index.rst"
-      ],
-      "description": "",
-      "title": "产品信息"
-    }
-
-说明：
-
-- "left_col": ".. navtree::\n :root_depth: 2"，这一行表示在products的所有未设置
-- "left_col"的子文件或子文件夹的视图都会有左列，且左列包含了导航树。 
-- ":root_depth: 2"表示从contents文件夹开始的第二级文件夹作为导航树的根，显示根以下的当前内容的父目录及兄弟目录。
-- "hidden_keys"字段包含的是不想在导航树中显示的子目录或子文件。
-
-注：
-
-- "left_col"、"right_col"都是向下传递的,或者说是向上依赖的。
-- 即，某一文件页面没设置"left_col"，但显示了左列，那是因为它的父目录有设置"left_col"，要让它不显示，可以设置"left_col":""。 所以，如果要某个目录下的所有页面显示左右列，只需在这个目录的matadata.json中设置左右列。
-.frs文件夹包含了.frs文件夹所在目录之下的其他目录或文件的信息。
-
-reStructuredText写法入门介绍：http://karronqiu.googlepages.com/ReStructuredText_Primer.html。
+      title: 易度，带您进入互联网工作时代！
+      description: 
+      left: indexcol.rst # 左列展示文件indexcol.rst
+      right:  # 右侧列
+      upper:  # 上方行
 
 TODO
 ================
