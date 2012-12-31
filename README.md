@@ -1,46 +1,29 @@
 ================================
 zcms : 基于文件系统的超轻CMS
 ================================
+厌倦了各种复杂的CMS建站系统？厌倦了升级，迁移，学习管理... 
 
-*大量简化中，请稍后使用*
+然而，Sphinx-doc太单调太简单了，Jekyll也还是太复杂...
 
-厌倦了各种复杂的内容管理系统？皮肤？数据库... 
+那么zcms来了, 一个极简的CMS，都是你熟悉的:
 
-作为曾经在CMS系统征战多年的笔者，坚信简单的力量，zcms正是此概念之下的产物：
+- 无需数据库, 每个页面是一个文本文件
+- 扩展reStructuredText指令，来实现动态页面
+- 支持Markdown格式编写页面
 
-- 不需要管理后台，网站内容，直接在文件系统上存放, 完全不需要数据库
-- 支持reST/md作为页面编写格式
-- 直接扩展reStructureText，来实现动态页面，无需任何“语句”
-- 使用yaml描述属性
-- powered by pyramid!
+启动服务
+=======================
+站点制作，启动：
 
-带来的好处：
+    ./bin/pserve development.ini
 
-- 内容暴露在文件系统中了，你可以用svn/grep/vi/ulipad/ftp/rsync，你不需要学什么新知识就知道怎么管理内容了！
-- 网站内容的编辑人员，也可以做动态页面了！
-- 做皮肤的人，不需要麻烦开发人员协助了
+正式使用，启动：
 
-其他类似系统的比较：
+    ./bin/pserve production.ini
 
-- sphinx-doc，太geek太死板，写书还行，做网站不适合
-- Jekyll吗，做个程序员自己维护的站点还行，公司站点就算了把
 
-扩展的reST指令
-=====================
-     .. news::
-        :size: 5
-        :path: blog
-
-     .. blog::
-        :path: blog
-
-     .. nav_tree::
-        :root_depth: 2
-
-root_depth: 表示从第二级文件夹作为导航树的根
-
-demo sites
-===========
+示例站点
+=========
 我们易度的所有站点，都采用这个开发完成：
 
 - http://everydo.com
@@ -49,66 +32,87 @@ demo sites
 - http://czug.org
 - http://zopen.cn
 
-安装
-====================
-
-    python bootstrap.py -d
-    ./bin/buildout
-
-启动服务
-=======================
-
-    ./bin/pserve production.ini
-
-制作站点: sites/demo
+无阻力建站
 ============================
-站点数据结构
---------------------
-TODO：吸收jekell的yaml配置方法，简化使用
+1. 创建站点文件夹
 
-     _config.yaml
-     index.rst
-     _index_upper.rst
-     tour/
-        _config.yaml
-        _upper.rst
-        _left.rst
+   站点默认放置在sites文件夹下，比如sites/demo
+
+2. 填充站点内容
+
+   在站点文件夹下创建子文件夹和页面，子文件夹将自动成为子栏目, index.rst或index.md自动成为子栏目的首页:
+
+     demo/
         index.rst
-        install.rst
-        sites.rst
-     blog/
-        _config.yaml
-        _upper.rst
-        _left.rst
-        index.rst
-        post01.rst
-        post02.rst
-     about.rst
-     _about_upper.rst
+        tour/
+           index.rst
+           install.rst
+           sites.rst
+        blog/
+           index.rst
+           post01.rst
+           post02.rst
+        about.rst
+        img/
+           logo.png
 
-配置站点属性 _config.yaml
---------------------------------------------
-网站的整体配置，导航数的顺序和显示也在这里配置:
+文件夹和页面属性
+===========================
+你可站点基本可以工作, 存在的问题：
 
-      theme_base: http://localhost:6543/themes/bootstrap # 皮肤存放的url基准地址, 如果需要换肤，改变这个就行
-      theme_default: defualt.html # 默认的皮肤
-      hidden: img                 # 隐藏的内容, 不在导航树中显示
-          index.rst
-      ordered:                    # 固定排序
+- 栏目顺序比较随机无序
+- 栏目标题是文件名，可能需要中文标题
 
-首页内容yaml设置
--------------------------------------------------
-描述了首页index.rst的信息，内容如下
- 
-      title: 易度，带您进入互联网工作时代！
-      description: 
-      left: indexcol.rst # 左列展示文件indexcol.rst
-      right:  # 右侧列
-      upper:  # 上方行
+每个文件夹下，可以放置一个 _config.yaml 的文件，在这里设置文件夹的属性:
 
-TODO
-================
-0. 和github集成，github修改后直接更新网站
-1. 提供更改内容的api（blog api？）
-2. 提供RSS
-3. 缓存，减少对文件系统的访问，减少metadata解析
+    title: 教程                                 # 标题
+    order: [index.rst, tour, blog, about.rst]   # 显示顺序
+    hide: [img]                                 # 隐藏图片文件夹的显示
+
+在站点下面的_config.yaml里面，还定义了整个站点的皮肤
+
+    theme_base: http://localhost:6543/themes/bootstrap/  # 存放模版的基准位置，这里可能存放了多个模版
+    theme_default: default.html                          # 默认的模版
+
+对于rst/md的页面文件, 可直接在文件头部指定这些信息:
+
+    ---
+    title: 教程                                 # 标题
+    ---
+
+页面文件的属性，必须以三个短横开始和结束
+
+
+设置左右列以及头部信息
+========================
+对整个文件夹下的页面模版，可以定制左侧、右侧和头部的显示信息，分别加入：
+
+1. _left.rst
+2. _right.rst
+3. _upper.rst
+
+如果具体某个页面，需要定制，也可以单独设置，通过命名来区分：
+
+1. index.rst 页面的头部信息 _upper_index.rst
+2. about.rst 页面的左侧信息 _left_about.rst
+
+动态内容
+=======================
+可在reST中使用如下指令即可：
+
+1. 最近新闻
+
+     .. news::
+        :size: 5
+        :path: blog
+
+2. 博客页面
+
+     .. blog::
+        :path: blog
+
+3. 导航数
+
+     .. nav_tree::
+        :root_depth: 2
+

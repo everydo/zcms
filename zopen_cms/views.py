@@ -17,7 +17,7 @@ def folder_view(context, request):
         response = HTTPFound(location=request.url + '/')
         return response
 
-    defaults = ('index.html', 'index.rst')
+    defaults = ('index.rst', 'index.md')
     for name in defaults:
         try:
             index = context[name]
