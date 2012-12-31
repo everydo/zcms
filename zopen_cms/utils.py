@@ -152,20 +152,16 @@ def rst_col_path(name, context):
     source_path = str(context.ospath)
     if isinstance(context, Folder):
         rst_path = os.path.join(source_path, '_' + name + '.rst')
-	if os.path.exists(rst_path):
-            col = open(rst_path).read()
-	    return col, source_path
     else:
-        file_name = context.metadata.get(name, '')
-	if file_name:
-            rst_path = os.path.join(os.path.dirname(source_path), file_name)
-            col = open(rst_path).read()
-	    return col, source_path
+        rst_path = os.path.join(os.path.dirname(source_path), '_' + name + '_' + context.__name__)
+
+    if os.path.exists(rst_path):
+        col = open(rst_path).read()
+        return col, source_path
 
     if context.__parent__ is None:
         return '', source_path
     return rst_col_path(name, context.__parent__)
-
 
 def render_slots(context, request):
     upper_rst, upper_path = rst_col_path('upper', context)
