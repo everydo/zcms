@@ -23,7 +23,6 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
     ./bin/pserve production.ini
 
-
 示例站点
 =========
 我们易度的所有站点，都采用这个开发完成：
@@ -44,19 +43,19 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
    在站点文件夹下创建子文件夹和页面，子文件夹将自动成为子栏目, index.rst或index.md自动成为子栏目的首页:
 
-     demo/
-        index.rst
-        tour/
-           index.rst
-           install.rst
-           sites.rst
-        blog/
-           index.rst
-           post01.rst
-           post02.rst
-        about.rst
-        img/
-           logo.png
+        demo/  
+            index.rst
+            tour/
+                index.rst
+                install.rst
+                sites.rst
+            blog/
+                index.rst
+                post01.rst
+                post02.rst
+            about.rst
+            img/
+                logo.png
 
 文件夹和页面属性
 ===========================
