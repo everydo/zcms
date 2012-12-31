@@ -1,14 +1,13 @@
 # -*- encoding: utf-8 -*-
 
 __docformat__ = 'restructuredtext'
-
+import yaml
 import time
 import tempfile
 import os.path
 import stat
 import posixpath
 from pyramid.threadlocal import get_current_registry
-	
 
 def get_sub_time_paths(folder, root_vpath):
     """ 迭代查找整个子目录，找出所有的子文档的路径 """
@@ -18,15 +17,13 @@ def get_sub_time_paths(folder, root_vpath):
         dc = obj.metadata
         if isinstance(obj, Folder):
             result.extend(get_sub_time_paths(obj, root_vpath))
-        elif isinstance(obj, Document):
+        elif isinstance(obj, Page):
             result.append((
                 dc.get('modified', 
                 dc.get('created', '')),
                 obj.vpath.replace(root_vpath + '/', ''),
             ))
     return result
-
-
 
 class FRSAsset(object):
 
@@ -42,11 +39,6 @@ class FRSAsset(object):
     def ospath(self):
         return self.frs.ospath(self.vpath)
 
-    @property
-    def metadata(self):
-        if self._md is None:
-            self._md = self.frs.getMetadata(self.vpath) or {}
-        return self._md
 
     @property
     def title(self):
@@ -55,6 +47,16 @@ class FRSAsset(object):
 	return self.__name__.split('.', 1)[0].replace('-', ' ')
 
 class Folder(FRSAsset):
+
+    @property
+    def metadata(self):
+        metadatapath = self.frs.joinpath(self.vpath, '_config.yaml')
+        try:
+            return yaml.load(self.frs.open(metadatapath))
+        except KeyError:
+            return {}
+        except IOError:
+            return {}
 
     def _filter(self, key):
         """Subclasses may overwrite this method.
@@ -82,7 +84,7 @@ class Folder(FRSAsset):
             if ext in ['.gif', '.bmp', '.jpg', '.jpeg', '.png']:
                 obj = Image(self.frs, path)
             elif ext in ['.html', '.htm', '.rst', '.md']:
-                obj = Document(self.frs, path)
+                obj = Page(self.frs, path)
             else:
                 obj = File(self.frs, path)
         else:
@@ -107,8 +109,8 @@ class Folder(FRSAsset):
         metadata = self.metadata
 
         if do_filter:
-            hidden_keys = metadata.get('hidden_keys', [])
-	    hidden_keys.extend(['left_col.rst', 'right_col.rst', 'upper_row.rst'])
+            hidden_keys = metadata.get('hide', [])
+	    hidden_keys.extend(['_config.yaml', '_left.rst', '_right.rst', '_upper.rst'])
             if hidden_keys:
                 keys = [key for key in keys if key not in hidden_keys]
                 # 通配后缀隐藏
@@ -117,20 +119,9 @@ class Folder(FRSAsset):
                     for key1 in tmp_keys:
                         if key1.endswith(hkey[1:]):
                             keys.remove(key1)
-            # 通配类型隐藏
-            hidden_types = metadata.get('hidden_types', [])
-            if hidden_types:
-                tmp_keys = keys[:]
-                for type in hidden_types:
-                    for key in tmp_keys:
-                        sub_file = self.get_obj_by_subpath(key)
-                        sub_metadata = sub_file.metadata
-                        sub_type = sub_metadata.get('contenttype', '')
-                        if type == sub_type:
-                            keys.remove(key)
 
         if do_sort:
-            sorted_keys = metadata.get('keys', [])
+            sorted_keys = metadata.get('order', [])
             if sorted_keys:
                 sorted_keys.reverse()
                 for key in sorted_keys:
@@ -254,6 +245,10 @@ class File(FRSAsset):
     data = property(_get_data, _set_data)
 
     @property
+    def metadata(self):
+        return {'title':self.__name__.split('.', 1)[0].replace('-', ' ')}
+
+    @property
     def contentType(self):
         if self.vpath.endswith('html'):
             return 'text/html'
@@ -264,10 +259,42 @@ class File(FRSAsset):
         else:
             return 'text/plain'
 
+class Image(File): pass
+   
+class Page(File):
 
-class Document(File):
-    pass
+    @property
+    def metadata(self):
+        if self._md is None:
+            f = self.frs.open(self.vpath, 'rb')
+            row = f.readline().strip()
+            if row != '---': 
+                self._md = {}
+                return self._md
 
+            lines = []
+            row = f.readline()
+	    while row:
+                if row.startswith('---'): break
+                lines.append(row)
+                row = f.readline()
+            else:
+                self._md = {}
+                return self._md
 
-class Image(File):
-    pass
+            self._md = yaml.load(''.join(lines))
+        return self._md
+
+    def get_body(self):
+        f = self.frs.open(self.vpath, 'rb')
+        row = f.readline().strip()
+        # windows会自动增加utf8的标识字
+        if row[0:3] == '\xef\xbb\xbf':
+            row = row[3:]
+        if row == '---': 
+            lines = []
+            row = f.readline()
+            while row and not row.startswith('---'): 
+                row = f.readline()
+            row = ''
+        return row + '\n' + f.read()

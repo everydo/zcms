@@ -9,7 +9,7 @@ from pyramid.renderers import render, render_to_response
 from pyramid.response import Response
 
 from utils import render_html, render_content
-from models import Folder, Document, Image, File
+from models import Folder, Page, Image, File
 
 @view_config(context=Folder)
 def folder_view(context, request):
@@ -55,7 +55,7 @@ def folder_view(context, request):
 
     return render_content(context, request, content)
 
-@view_config(context=Document)
+@view_config(context=Page)
 def document_view(context, request):
     html = render_html(context, request)
     return render_content(context, request, html)
@@ -100,7 +100,7 @@ def download_view(context, request):
     response = Response(context.data)
     filename = context.frs.basename(context.vpath)
     mt, encoding = mimetypes.guess_type(filename)
-    if isinstance(context, Document):
+    if isinstance(context, Page):
         response.content_type = 'text/html'         # mt or 'text/plain'
     else:
         response.content_type = mt or 'text/plain'

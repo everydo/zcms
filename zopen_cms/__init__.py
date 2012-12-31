@@ -4,7 +4,7 @@ import docutilsplugins
 
 from pyramid.config import Configurator
 
-from zopen_frs import FRS
+from frs import FRS
 from zopen_cms.models import Folder
 
 

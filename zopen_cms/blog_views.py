@@ -7,7 +7,7 @@ from pyramid.renderers import render
 
 #from z3c.batching.batch import Batch
 
-from models import Document
+from models import Page 
 from webhelpers import paginate
 from utils import getDisplayTime, get_site, render_html, render_content
 
@@ -72,7 +72,7 @@ def news_portlet(context, request, path, size=5, klass='nav nav-list'):
 
     return '<ul class="%s">%s</ul>' % (klass, ''.join(posts))
 
-@view_config(context=Document, name="blogpost.html")
+@view_config(context=Page, name="blogpost.html")
 def blog_post_view(context, request):
     """ 单独一篇博客 """
     obj = context
@@ -83,7 +83,7 @@ def blog_post_view(context, request):
     result['title'] = obj.title
     result['description'] = dc.get('description', '')
     result['created'] = dc.get('modified', dc.get('created', ''))
-    result['creator'] = dc.get('creators', [])[0]
+    result['creator'] = dc.get('creators', [''])[0]
 
     pachs = request.url.split('/')
     img_url =  '/'.join(pachs[0:len(pachs)-2]) + '/img/'

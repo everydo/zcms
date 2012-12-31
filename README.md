@@ -70,17 +70,17 @@ TODO：吸收jekell的yaml配置方法，简化使用
      index.rst
      _index_upper.rst
      tour/
-	_config.yaml
+        _config.yaml
         _upper.rst
         _left.rst
-	index.rst
-	install.rst
-	sites.rst
+        index.rst
+        install.rst
+        sites.rst
      blog/
         _config.yaml
         _upper.rst
         _left.rst
-	index.rst
+        index.rst
         post01.rst
         post02.rst
      about.rst

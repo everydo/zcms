@@ -1,0 +1,9 @@
+title: 博客
+description: a demo site
+theme_default: default.html
+order: 
+        index.rst
+        tour
+        blog
+        about.rst
+hide:  [index.rst]

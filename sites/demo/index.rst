@@ -1,9 +1,11 @@
+---
+title: 首页
+theme: home.html
+---
+
 =================
 hello world
 =================
-:Revision: 2.2
-:Author: 潘俊勇
-:Date: 2012-03-05
 
 - this is a empty zcms site
 - edit contents folder for contents

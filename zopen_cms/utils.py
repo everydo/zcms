@@ -9,7 +9,7 @@ import os
 import chardet
 from string import Template
 from pyramid.response import Response
-from models import Folder, Document
+from models import Folder
 from pyramid.threadlocal import get_current_registry
 import markdown
 
@@ -93,10 +93,6 @@ def rst2html(rst, path, context, request):
         'request':request
     }
 
-    # TODO(Prim): rst文本里面有border="1"?
-    # 表格生成的时候，会出现一个border=1，需要去除
-    rst = rst.replace('border="1"', '')
-
     parts = publish_parts(
         rst,
         source_path = path,
@@ -105,26 +101,22 @@ def rst2html(rst, path, context, request):
     )
     return parts['html_body']
 
-def render_html(document, request):
-    data = document.data
+def render_html(page, request):
+    data = page.get_body()
 
     lstrip_data = data.lstrip()
-    # windows会自动增加utf8的标识字
-    if lstrip_data[0:3]== '\xef\xbb\xbf':
-        lstrip_data = lstrip_data[3:]
-
-    if document.__name__.endswith('.rst'):
+    if page.__name__.endswith('.rst'):
         # 判断文件内容是否为html
         # 文件内容不是html时，认为内容为rst文本
         if lstrip_data and lstrip_data[0] == '<':
             return data
 
         # 不显示的标题区域，标题在zpt里面独立处理了
-        ospath = document.ospath
-        return rst2html(data, str(ospath), document, request)
-    elif document.__name__.endswith('.html'):
+        ospath = page.ospath
+        return rst2html(data, str(ospath), page, request)
+    elif page.__name__.endswith('.html'):
         return data
-    elif document.__name__.endswith('.md'):
+    elif page.__name__.endswith('.md'):
         return ''.join(markdown.Markdown().convert(data))
 
 def get_site(context):
@@ -159,7 +151,7 @@ def rst_col_path(name, context):
         return '', ''
     source_path = str(context.ospath)
     if isinstance(context, Folder):
-        rst_path = os.path.join(source_path, name + '.rst')
+        rst_path = os.path.join(source_path, '_' + name + '.rst')
 	if os.path.exists(rst_path):
             col = open(rst_path).read()
 	    return col, source_path
@@ -176,27 +168,27 @@ def rst_col_path(name, context):
 
 
 def render_slots(context, request):
-    upper_rst, upper_path = rst_col_path('upper_row', context)
+    upper_rst, upper_path = rst_col_path('upper', context)
     if upper_rst != '':
         html_upper = rst2html(upper_rst, upper_path, context, request)
     else:
         html_upper = ''
 
-    left_col_rst, left_col_path = rst_col_path('left_col', context)
+    left_col_rst, left_col_path = rst_col_path('left', context)
     if left_col_rst != '':
         html_left = rst2html(left_col_rst, left_col_path, context, request)
     else:
         html_left = ''
 
-    right_col_rst, right_col_path = rst_col_path('right_col', context)
+    right_col_rst, right_col_path = rst_col_path('right', context)
     if right_col_rst != '':
         html_right = rst2html(right_col_rst, right_col_path, context, request)
     else:
         html_right = ''
 
-    return { 'left_col': html_left,
-             'right_col': html_right,
-             'upper_row': html_upper
+    return { 'left': html_left,
+             'right': html_right,
+             'upper': html_upper
            }
 
 def render_content(context, request, content, **kw):

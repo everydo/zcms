@@ -1,3 +1,9 @@
+---
+title: 关于我们
+description: about site
+theme: home.html
+---
+
 ==========
 About
 ==========

@@ -2,7 +2,7 @@
 
 from pyramid.url import resource_url
 
-from zopen_cms.models import Folder, Document, File, Image
+from zopen_cms.models import Folder, File, Image
 
 class NavTreeData(object):
     """ 一个适配器，获得根据当前上下文对象显示导航树，所需要的数据 """
