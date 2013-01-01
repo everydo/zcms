@@ -12,16 +12,22 @@ zcms : 基于文件系统的超轻CMS
 - 支持Markdown格式编写页面
 - 支持多站点
 
+zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任何开发知识即可掌握
+
 启动服务
 =======================
-站点制作，启动：
+准备运行环境:
+
+     python bootstrap.py
+     bin/buildout
+     
+站点制作过程，启动：
 
     ./bin/pserve development.ini
 
-正式使用，启动：
+正式使用(缓存加速)，启动：
 
     ./bin/pserve production.ini
-
 
 示例站点
 =========
@@ -43,19 +49,23 @@ zcms : 基于文件系统的超轻CMS
 
    在站点文件夹下创建子文件夹和页面，子文件夹将自动成为子栏目, index.rst或index.md自动成为子栏目的首页:
 
-     demo/
-        index.rst
-        tour/
-           index.rst
-           install.rst
-           sites.rst
-        blog/
-           index.rst
-           post01.rst
-           post02.rst
-        about.rst
-        img/
-           logo.png
+        demo/  
+            index.rst
+            tour/
+                index.rst
+                install.rst
+                sites.rst
+            blog/
+                index.rst
+                post01.rst
+                post02.rst
+            about.rst
+            img/
+                logo.png
+
+3. 完工，你也看到一个twitter bootstrap风格的站点!
+
+   很不完美，后面来完善...
 
 文件夹和页面属性
 ===========================
@@ -103,19 +113,19 @@ zcms : 基于文件系统的超轻CMS
 
 1. 最近新闻
 
-     .. news::
-        :size: 5
-        :path: blog
+         .. news::
+            :size: 5
+            :path: blog
 
 2. 博客页面
 
-     .. blog::
-        :path: blog
+         .. blog::
+            :path: blog
 
 3. 导航树
 
-     .. nav_tree::
-        :root_depth: 2
+         .. nav_tree::
+            :root_depth: 2
 
 TODO
 ================
