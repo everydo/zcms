@@ -8,7 +8,7 @@ zcms : 基于文件系统的超轻CMS
 那么zcms来了, 一个极简的CMS，都是你熟悉的:
 
 - 无需数据库, 每个页面是一个文本文件
-- 扩展reStructuredText指令，来实现动态页面
+- 扩展reStructuredText指令，轻松实现博客、导航、新闻等动态内容
 - 支持Markdown格式编写页面
 - 支持多站点
 
