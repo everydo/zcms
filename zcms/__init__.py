@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-import docutilsplugins
+import directives 
 
 from pyramid.config import Configurator
 
