@@ -12,7 +12,9 @@ zcms : 基于文件系统的超轻CMS
 - 支持Markdown格式编写页面
 - 支持多站点
 
-zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任何开发知识即可掌握
+zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任何开发知识即可掌握. 
+
+欢迎微博传播，如有反馈，请微博联系: http://weibo.com/panjunyong
 
 启动服务
 =======================
