@@ -5,8 +5,7 @@ import docutilsplugins
 from pyramid.config import Configurator
 
 from frs import FRS
-from zopen_cms.models import Folder
-
+from models import Folder
 
 def main(global_config, sites, **settings):
 
@@ -20,7 +19,7 @@ def main(global_config, sites, **settings):
         return folder
 
     config = Configurator(settings=settings, root_factory=get_root)
-    config.scan('zopen_cms')
+    config.scan('zcms')
     return config.make_wsgi_app()
 
 

@@ -10,6 +10,7 @@ zcms : 基于文件系统的超轻CMS
 - 无需数据库, 每个页面是一个文本文件
 - 扩展reStructuredText指令，来实现动态页面
 - 支持Markdown格式编写页面
+- 支持多站点
 
 启动服务
 =======================
@@ -111,8 +112,14 @@ zcms : 基于文件系统的超轻CMS
      .. blog::
         :path: blog
 
-3. 导航数
+3. 导航树
 
      .. nav_tree::
         :root_depth: 2
 
+TODO
+================
+1. 默认的bootstrap风格皮肤还很弱，还没有支持right列
+2. production模式下，应该大量缓存加速
+3. 提供blogger api
+4. 提供RSS

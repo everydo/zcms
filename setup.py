@@ -36,7 +36,7 @@ requires = [
 ]
 
 setup(
-    name='zopen_cms',
+    name='zcms',
     version=__version__,
     description='Serve filesystem content via repoze.bfg',
     long_description=README + '\n\nCHANGES\n\n' + CHANGES,
@@ -60,8 +60,7 @@ setup(
     tests_require = requires,
     install_requires = requires,
     entry_points = {
-        'paste.app_factory':['main=zopen_cms:main'],
-        'paste.filter_app_factory':['theme=zopen_cms:Theme']
+        'paste.app_factory':['main=zcms:main'],
     },
 )
 

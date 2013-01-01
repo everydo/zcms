@@ -21,7 +21,7 @@ navtree_directive.arguments = (0, 1, 0)
 """
 from docutils import nodes
 from docutils.parsers.rst import directives
-from zopen_cms.blog_views import blog_view
+from zcms.blog_views import blog_view
 
 def blogs_directive(name, arguments, options, content, lineno,
                     content_offset, block_text, state, state_machine):
