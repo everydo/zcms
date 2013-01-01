@@ -80,10 +80,6 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
     order: [index.rst, tour, blog, about.rst]   # 显示顺序
     hide: [img]                                 # 隐藏图片文件夹的显示
 
-在站点下面的_config.yaml里面，还定义了整个站点的皮肤
-
-    theme_base: http://localhost:6543/themes/bootstrap/  # 存放模版的基准位置，这里可能存放了多个模版
-    theme_default: default.html                          # 默认的模版
 
 对于rst/md的页面文件, 可直接在文件头部指定这些信息:
 
@@ -92,10 +88,6 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
     ---
 
 页面文件的属性，必须以三个短横开始和结束
-
-如果不想使用默认的外观模版，可文件夹或页面属性中，都可以设置外观模版:
-
-    theme: home.html     # 首页模版，可能没有左右列
 
 
 设置左右列以及头部信息
@@ -130,6 +122,28 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
          .. nav_tree::
             :root_depth: 2
+
+外观模版的设置和制作
+=========================
+在站点根文件夹下面的_config.yaml里面，定义了整个站点的皮肤
+
+    theme_base: http://localhost:6543/themes/bootstrap/  # 存放模版的基准位置，这里可能存放了多个模版
+    theme_default: default.html                          # 默认的模版
+
+外观模版是通过一个网址来指定的，上面的完整外观模版地址是：
+
+    http://localhost:6543/themes/bootstrap/default.html
+
+如果不想使用默认的外观模版，可文件夹或页面属性中，设置个性化的外观模版:
+
+    theme: home.html     # 首页模版，可能没有左右列
+
+这里会使用外观模版:
+
+    http://localhost:6543/themes/bootstrap/home.html
+
+具体如何定义一个外观模版？可看看themes文件夹里面的文件，因为太简单，就不细说了。
+(其实就是一个python的String Template)
 
 TODO
 ================
