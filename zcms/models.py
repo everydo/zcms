@@ -56,7 +56,7 @@ class FRSAsset(object):
             context = context.__parent__
         return context
 
-    def get_slot_info(self, name):
+    def _get_slot_info(self, name):
         # 往上找左右列
         if self.__name__ == '':
              return '', ''
@@ -72,22 +72,22 @@ class FRSAsset(object):
 
         if self.__parent__ is None:
             return '', source_path
-        return self.__parent__.get_slot_info(name)
+        return self.__parent__._get_slot_info(name)
 
     def render_slots(self, request):
-        upper_rst, upper_path = self.get_slot_info('upper')
+        upper_rst, upper_path = self._get_slot_info('upper')
         if upper_rst != '':
             html_upper = rst2html(upper_rst, upper_path, self, request)
         else:
             html_upper = ''
 
-        left_col_rst, left_col_path = self.get_slot_info('left')
+        left_col_rst, left_col_path = self._get_slot_info('left')
         if left_col_rst != '':
             html_left = rst2html(left_col_rst, left_col_path, self, request)
         else:
             html_left = ''
 
-        right_col_rst, right_col_path = self.get_slot_info('right')
+        right_col_rst, right_col_path = self._get_slot_info('right')
         if right_col_rst != '':
             html_right = rst2html(right_col_rst, right_col_path, self, request)
         else:
