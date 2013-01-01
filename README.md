@@ -15,11 +15,16 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
 启动服务
 =======================
-站点制作，启动：
+准备运行环境:
+
+     python bootstrap.py
+     bin/buildout
+     
+站点制作过程，启动：
 
     ./bin/pserve development.ini
 
-正式使用，启动：
+正式使用(缓存加速)，启动：
 
     ./bin/pserve production.ini
 
@@ -56,6 +61,10 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
             about.rst
             img/
                 logo.png
+
+3. 完工，你也看到一个twitter bootstrap风格的站点!
+
+   很不完美，后面来完善...
 
 文件夹和页面属性
 ===========================
