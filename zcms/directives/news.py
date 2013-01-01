@@ -22,8 +22,8 @@ navtree_directive.arguments = (0, 1, 0)
 """
 from docutils import nodes
 from pyramid.url import resource_url
-from zcms.utils import get_site
 from docutils.parsers.rst import directives
+from zcms.utils import getDisplayTime
 
 def news_directive(name, arguments, options, content, lineno, content_offset, block_text, state, state_machine):
     context = state.document.settings.context
@@ -40,7 +40,7 @@ news_directive.options = {'size': int, 'path': str, 'class':str}
 directives.register_directive('news', news_directive)
 
 def render_news(context, request, path, size=5, klass='nav nav-list'):
-    site = get_site(context)
+    site = context.get_site()
     container = site.get_obj_by_subpath(path)
     container_url = resource_url(container, request)
     title = container.title

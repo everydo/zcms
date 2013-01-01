@@ -9,9 +9,7 @@ import os
 import chardet
 from string import Template
 from pyramid.response import Response
-from models import Folder
 from pyramid.threadlocal import get_current_registry
-import markdown
 
 _templates_cache = {}
 
@@ -101,28 +99,6 @@ def rst2html(rst, path, context, request):
     )
     return parts['html_body']
 
-def render_html(page, request):
-    data = page.get_body()
-
-    lstrip_data = data.lstrip()
-    if page.__name__.endswith('.rst'):
-        # 判断文件内容是否为html
-        # 文件内容不是html时，认为内容为rst文本
-        if lstrip_data and lstrip_data[0] == '<':
-            return data
-
-        # 不显示的标题区域，标题在zpt里面独立处理了
-        ospath = page.ospath
-        return rst2html(data, str(ospath), page, request)
-    elif page.__name__.endswith('.html'):
-        return data
-    elif page.__name__.endswith('.md'):
-        return ''.join(markdown.Markdown().convert(data))
-
-def get_site(context):
-    while context.vpath.find('/', 1) != -1:
-        context = context.__parent__
-    return context
 
 def render_sections(site, context, request):
     if site is None:
@@ -145,55 +121,12 @@ def render_sections(site, context, request):
 
     return ''.join(html_list)
 
-def rst_col_path(name, context):
-    # 往上找左右列
-    if context.__name__ == '':
-        return '', ''
-    source_path = str(context.ospath)
-    if isinstance(context, Folder):
-        rst_path = os.path.join(source_path, '_' + name + '.rst')
-    else:
-        rst_path = os.path.join(os.path.dirname(source_path), '_' + name + '_' + context.__name__)
-
-    if os.path.exists(rst_path):
-        col = open(rst_path).read()
-        return col, source_path
-
-    if context.__parent__ is None:
-        return '', source_path
-    return rst_col_path(name, context.__parent__)
-
-def render_slots(context, request):
-    upper_rst, upper_path = rst_col_path('upper', context)
-    if upper_rst != '':
-        html_upper = rst2html(upper_rst, upper_path, context, request)
-    else:
-        html_upper = ''
-
-    left_col_rst, left_col_path = rst_col_path('left', context)
-    if left_col_rst != '':
-        html_left = rst2html(left_col_rst, left_col_path, context, request)
-    else:
-        html_left = ''
-
-    right_col_rst, right_col_path = rst_col_path('right', context)
-    if right_col_rst != '':
-        html_right = rst2html(right_col_rst, right_col_path, context, request)
-    else:
-        html_right = ''
-
-    return { 'left': html_left,
-             'right': html_right,
-             'upper': html_upper
-           }
 
 def render_content(context, request, content, **kw):
     # 获取模式，得到所有上级的属性
 
-    site = get_site(context)
-
+    site = context.get_site()
     dc = context.metadata
-
     description = dc.get('description', '')
     site_title = context.title + ' - ' + site.title
 
@@ -204,7 +137,7 @@ def render_content(context, request, content, **kw):
         sections = ''
 
     # 渲染左右列
-    kw = render_slots(context, request)
+    kw = context.render_slots(request)
 
     # 根据模版来渲染最终效果
     kw.update( dict(

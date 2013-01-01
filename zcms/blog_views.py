@@ -9,7 +9,7 @@ from pyramid.renderers import render
 
 from models import Page 
 from webhelpers import paginate
-from utils import getDisplayTime, get_site, render_html, render_content
+from utils import getDisplayTime, render_content
 
 def blog_view(context, request, size=5):
     current_page = request.params.get('page', '0')
@@ -27,7 +27,7 @@ def blog_view(context, request, size=5):
         if obj is not None:
             url = '/'.join(obj.vpath.split('/')[2:])
             dc = obj.metadata
-            raw_html = render_html(obj, request)
+            raw_html = obj.render_html(request)
             converted_html = raw_html.replace(
                 'src="img/',
                 'src="%s/%s/../img/' % (request.application_url, url)
@@ -66,7 +66,7 @@ def blog_post_view(context, request):
 
     pachs = request.url.split('/')
     img_url =  '/'.join(pachs[0:len(pachs)-2]) + '/img/'
-    result['body'] = render_html(obj, request).replace('src="img/', 'src="%s' % img_url)
+    result['body'] = obj.render_html(request).replace('src="img/', 'src="%s' % img_url)
 
     idcomments_acct = request.registry.settings.get('idcomments_acct', '')
 

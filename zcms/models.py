@@ -8,7 +8,9 @@ import os.path
 import stat
 import posixpath
 from pyramid.threadlocal import get_current_registry
+import markdown
 import fnmatch
+from utils import rst2html
 
 def get_sub_time_paths(folder, root_vpath):
     """ 迭代查找整个子目录，找出所有的子文档的路径 """
@@ -46,6 +48,52 @@ class FRSAsset(object):
         title = self.metadata.get('title', '')
 	if title: return title
 	return self.__name__.split('.', 1)[0].replace('-', ' ')
+
+    def get_site(self):
+        """ 得到所属的站点 """
+        context = self
+        while context.vpath.find('/', 1) != -1:
+            context = context.__parent__
+        return context
+
+    def get_slot_info(self, name):
+        # 往上找左右列
+        if self.__name__ == '':
+             return '', ''
+        source_path = str(self.ospath)
+        if isinstance(self, Folder):
+            rst_path = os.path.join(source_path, '_' + name + '.rst')
+        else:
+            rst_path = os.path.join(os.path.dirname(source_path), '_' + name + '_' + self.__name__)
+
+        if os.path.exists(rst_path):
+            col = open(rst_path).read()
+            return col, source_path
+
+        if self.__parent__ is None:
+            return '', source_path
+        return self.__parent__.get_slot_info(name)
+
+    def render_slots(self, request):
+        upper_rst, upper_path = self.get_slot_info('upper')
+        if upper_rst != '':
+            html_upper = rst2html(upper_rst, upper_path, self, request)
+        else:
+            html_upper = ''
+
+        left_col_rst, left_col_path = self.get_slot_info('left')
+        if left_col_rst != '':
+            html_left = rst2html(left_col_rst, left_col_path, self, request)
+        else:
+            html_left = ''
+
+        right_col_rst, right_col_path = self.get_slot_info('right')
+        if right_col_rst != '':
+            html_right = rst2html(right_col_rst, right_col_path, self, request)
+        else:
+            html_right = ''
+
+        return {'left': html_left, 'right': html_right, 'upper': html_upper }
 
 class Folder(FRSAsset):
 
@@ -294,3 +342,19 @@ class Page(File):
                 row = f.readline()
             row = ''
         return row + '\n' + f.read()
+
+    def render_html(self, request):
+        data = self.get_body()
+
+        lstrip_data = data.lstrip()
+        if self.__name__.endswith('.rst'):
+            # 判断文件内容是否为html
+            if lstrip_data and lstrip_data[0] == '<':
+                return data
+
+            # 不显示的标题区域，标题在zpt里面独立处理了
+            ospath = self.ospath
+            return rst2html(data, str(ospath), self, request)
+        elif self.__name__.endswith('.md'):
+            return ''.join(markdown.Markdown().convert(data))
+
