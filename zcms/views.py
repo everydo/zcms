@@ -62,18 +62,12 @@ def document_view(context, request):
 
 @view_config(context=File, name="view.html")
 def file_view(context, request):
-    dc = context.metadata
-    title = dc.get('title', context.__name__)
-    description = dc.get('description', '')
-    url = context.__name__
-
     content = render(
             'templates/file.pt',
             dict(
-                title=title,
-                description=description,
-                url=url,
-                tabs=tabs
+                title = context.title,
+                description = context.metadata.get('description', ''),
+                url = context.__name__
             )
         )
     return render_content(context, request, content)
