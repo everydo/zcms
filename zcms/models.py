@@ -343,5 +343,5 @@ class Page(File):
             ospath = self.ospath
             return rst2html(data, str(ospath), self, request)
         elif self.__name__.endswith('.md'):
-            return ''.join(markdown.Markdown().convert(data))
+            return ''.join(markdown.Markdown().convert(data.decode('utf8')))
 

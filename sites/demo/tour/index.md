@@ -1,46 +1,43 @@
 ---
 title: 快速教程
+description: 这里加上一些用于SEO的文字
 ---
-===============
 快速教程
 ===============
 
 安装
-====================
+-------
 
-    python bootstrap.py -d
-    ./bin/buildout
+      python bootstrap.py -d
+      ./bin/buildout
 
 启动服务
-=======================
+--------------
 
-    ./bin/pserve production.ini
+      ./bin/pserve production.ini
 
-制作站点: sites/demo
-============================
 站点数据结构
 --------------------
-TODO：吸收jekell的yaml配置方法，简化使用
 
-     _config.yaml
-     index.rst
-     _index_upper.rst
-     tour/
+       _config.yaml
+       index.rst
+       _index_upper.rst
+       tour/
         _config.yaml
         _upper.rst
         _left.rst
         index.rst
         install.rst
         sites.rst
-     blog/
+       blog/
         _config.yaml
         _upper.rst
         _left.rst
         index.rst
         post01.rst
         post02.rst
-     about.rst
-     _about_upper.rst
+       about.rst
+       _about_upper.rst
 
 配置站点属性 _config.yaml
 --------------------------------------------
@@ -62,9 +59,3 @@ TODO：吸收jekell的yaml配置方法，简化使用
       right:  # 右侧列
       upper:  # 上方行
 
-TODO
-================
-0. 和github集成，github修改后直接更新网站
-1. 提供更改内容的api（blog api？）
-2. 提供RSS
-3. 缓存，减少对文件系统的访问，减少metadata解析
