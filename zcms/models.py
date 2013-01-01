@@ -74,26 +74,13 @@ class FRSAsset(object):
             return '', source_path
         return self.__parent__._get_slot_info(name)
 
-    def render_slots(self, request):
-        upper_rst, upper_path = self._get_slot_info('upper')
-        if upper_rst != '':
-            html_upper = rst2html(upper_rst, upper_path, self, request)
+    def render_slots(self, name, request):
+        """ name can be: left, right, upper """
+        rst_content, rst_path = self._get_slot_info(name)
+        if rst_content != '':
+            return rst2html(rst_content, rst_path, self, request)
         else:
-            html_upper = ''
-
-        left_col_rst, left_col_path = self._get_slot_info('left')
-        if left_col_rst != '':
-            html_left = rst2html(left_col_rst, left_col_path, self, request)
-        else:
-            html_left = ''
-
-        right_col_rst, right_col_path = self._get_slot_info('right')
-        if right_col_rst != '':
-            html_right = rst2html(right_col_rst, right_col_path, self, request)
-        else:
-            html_right = ''
-
-        return {'left': html_left, 'right': html_right, 'upper': html_upper }
+            return ''
 
 class Folder(FRSAsset):
 

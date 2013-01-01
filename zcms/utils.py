@@ -101,8 +101,7 @@ def rst2html(rst, path, context, request):
 
 
 def render_sections(site, context, request):
-    if site is None:
-        return ''
+    if context.vpath == '/': return
 
     html_list = []
     for tab in site.values(True, True):
@@ -123,29 +122,17 @@ def render_sections(site, context, request):
 
 
 def render_content(context, request, content, **kw):
-    # 获取模式，得到所有上级的属性
-
     site = context.get_site()
-    dc = context.metadata
-    description = dc.get('description', '')
-    site_title = context.title + ' - ' + site.title
-
-    # 渲染总标签栏目
-    if context.vpath != '/':
-        sections = render_sections(site, context, request)
-    else:
-        sections = ''
-
-    # 渲染左右列
-    kw = context.render_slots(request)
-
     # 根据模版来渲染最终效果
-    kw.update( dict(
-        title = site_title,
-        nav = sections,
-        content = content,
-        description = description
-    ))
+    kw = {
+        'title': context.title + ' - ' + site.title,
+        'description': context.metadata.get('description', ''),
+        'nav': render_sections(site, context, request),
+        'content': content,
+        'left': context.render_slots('left', request),
+        'right': context.render_slots('right', request),
+        'upper': context.render_slots('upper', request),
+        }
 
     # 线上运行，多站点支持, support ngix
     path_info = request.environ['PATH_INFO'].split('/', 2)
