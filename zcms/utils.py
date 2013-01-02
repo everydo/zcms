@@ -120,11 +120,20 @@ def render_sections(site, context, request):
 
     return ''.join(html_list)
 
+def zcms_template(func):
+    def _func(context, request):
+        site = context.get_site()
+        if request.registry.settings['use_vhm'] == 'true':
+            # 线上运行，多站点支持, support ngix
+            path_info = request.environ['PATH_INFO'].split('/', 2)
+            if len(path_info) > 2:
+                request.environ['HTTP_X_VHM_ROOT'] = '/' + site.__name__
+                request.environ['PATH_INFO'] = '/%s' % path_info[2]
 
-def render_content(context, request, content, **kw):
-    site = context.get_site()
-    # 根据模版来渲染最终效果
-    kw = {
+        content = func(context, request)
+
+        # 根据模版来渲染最终效果
+        kw = {
         'title': context.title + ' - ' + site.title,
         'description': context.metadata.get('description', ''),
         'nav': render_sections(site, context, request),
@@ -134,21 +143,16 @@ def render_content(context, request, content, **kw):
         'upper': context.render_slots('upper', request),
         }
 
-    # 线上运行，多站点支持, support ngix
-    path_info = request.environ['PATH_INFO'].split('/', 2)
-    if len(path_info) > 2:
-        request.environ['HTTP_X_VHM_ROOT'] = '/' + site.__name__
-        request.environ['PATH_INFO'] = '/%s' % path_info[2]
-
-    theme_base = site.metadata.get('theme_base', 'http://localhost:6543/themes/bootstrap/')
-    theme_default = site.metadata.get('theme_default', 'default.html')
-    theme = context.metadata.get('theme', theme_default)
-    template = get_theme_template(theme_base + theme)
-    output = template.substitute(kw).encode('utf8')
-    return Response(output, headerlist=[
+        theme_base = site.metadata.get('theme_base', 'http://localhost:6543/themes/bootstrap/')
+        theme_default = site.metadata.get('theme_default', 'default.html')
+        theme = context.metadata.get('theme', theme_default)
+        template = get_theme_template(theme_base + theme)
+        output = template.substitute(kw).encode('utf8')
+        return Response(output, headerlist=[
                 ('Content-length', str(len(output))),
                 ('Content-type', 'text/html; charset=UTF-8')
 	    ])
+    return _func
 
 def get_theme_template(theme_url):
     # cache template, TODO refresh cache

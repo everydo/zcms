@@ -147,6 +147,27 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 具体如何定义一个外观模版？可看看themes文件夹里面的文件，因为太简单，就不细说了。
 (其实就是一个python的String Template)
 
+nginx虚拟主机
+=======================
+默认安装，我们得到的地址首页是
+
+     http://server.com:6543/site_name
+
+如果我们希望实际类似这样访问
+
+     http://site_name.server.com:6543
+
+需要调整：
+
+1. 采用uwsgi来带，需要预先安装uwsgi, 使用自带的uwsgi.ini
+2. nginx.conf里面，增加rewrite指令
+
+        if ($host = site_name\.server\.com) {
+            rewrite ^/(.*) /server.com/site_name/$1 break;
+        }
+
+3. 开启虚拟主机功能, 调整production.ini，设置use_vhm = true
+
 TODO
 ================
 1. 默认的bootstrap风格皮肤还很弱，还没有支持right列

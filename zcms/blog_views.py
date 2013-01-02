@@ -9,7 +9,7 @@ from pyramid.renderers import render
 
 from models import Page 
 from webhelpers import paginate
-from utils import getDisplayTime, render_content
+from utils import getDisplayTime, zcms_template
 
 def blog_view(context, request, size=5):
     current_page = request.params.get('page', '0')
@@ -52,6 +52,7 @@ def blog_view(context, request, size=5):
 
 
 @view_config(context=Page, name="blogpost.html")
+@zcms_template
 def blog_post_view(context, request):
     """ 单独一篇博客 """
     obj = context
@@ -72,7 +73,7 @@ def blog_post_view(context, request):
 
     title = context.title
     description = dc.get('description', '')
-    content = render(
+    return render(
         'templates/blogpost_main.pt',
         dict(
             result = result,
@@ -81,4 +82,3 @@ def blog_post_view(context, request):
         )
     )
 
-    return render_content(context, request, content)
