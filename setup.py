@@ -14,9 +14,6 @@
 
 __version__ = '0.2'
 
-from ez_setup import use_setuptools
-use_setuptools()
-
 import os
 from setuptools import setup, find_packages
 
