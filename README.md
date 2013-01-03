@@ -8,8 +8,9 @@ zcms : 基于文件系统的超轻CMS
 那么zcms来了, 一个极简的CMS，都是你熟悉的:
 
 - 无需数据库, 每个页面是一个文本文件
-- 扩展reStructuredText指令，轻松实现博客、导航、新闻等动态内容
-- 支持Markdown格式编写页面
+- 扩展reStructuredText指令(.rst)，轻松实现博客、导航、新闻等动态内容
+- 支持Markdown格式(.md)编写页面
+- 当然支持html页面(.html)
 - 支持多站点
 
 zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任何开发知识即可掌握. 

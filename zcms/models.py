@@ -345,3 +345,6 @@ class Page(File):
         elif self.__name__.endswith('.md'):
             return ''.join(markdown.Markdown().convert(data.decode('utf8')))
 
+        elif self.__name__.endswith('.html'):
+            return data
+
