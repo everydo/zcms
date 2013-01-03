@@ -33,7 +33,6 @@ class FRS:
     def __init__(self, cache_root='/tmp'):
         self._top_paths = {}
         self.cache_root = cache_root
-        self.sitepaths2vpaths = []
 
     def mount(self, name, path):
         """ XXX only support mount top dirs only now
@@ -45,28 +44,6 @@ class FRS:
         if name.startswith('/'):
             name = name[1:]
         self._top_paths[name] = path
-
-    def mapSitepath2Vpath(self, site_path, vpath):
-        """ map vpath to site path """
-        self.sitepaths2vpaths.append( (site_path, vpath) )
-
-    def sitepath2Vpath(self, site_path):
-        if site_path[-1] != '/':
-            site_path += '/'
-
-        for _spath, _vpath in self.sitepaths2vpaths:
-            if _spath[-1] != '/':
-                _spath += '/'
-
-            if site_path.startswith(_spath):
-                if _vpath[-1] != '/':
-                    _vpath += '/'
-
-                result = _vpath + site_path[len(_spath):]
-                if result[-1] == '/':
-                    return result[:-1]
-                return result
-        raise ValueError('can not find a frs path for site path %s' % site_path)
 
     def setCacheRoot(self, path):
         """ where to push caches """
