@@ -177,3 +177,4 @@ TODO
 2. production模式下，应该大量缓存加速，减少io
 3. 提供blogger api
 4. 提供RSS输出
+5. 使用zapian进行全文搜索、排序等
