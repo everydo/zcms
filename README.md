@@ -175,6 +175,6 @@ TODO
 ================
 1. 默认的bootstrap风格皮肤还很弱，还没有支持right列
 2. production模式下，应该大量缓存加速，减少io
-3. 提供blogger api
+3. 提供webdav api
 4. 提供RSS输出
 5. 使用zapian进行全文搜索、排序等
