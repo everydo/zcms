@@ -171,7 +171,7 @@ nginx虚拟主机
 
 3. 开启虚拟主机功能, 调整production.ini，设置use_vhm = true
 
-Jekll参考
+Jekyll参考
 ===================
 
 - http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html
