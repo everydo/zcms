@@ -4,4 +4,4 @@ theme_base: http://localhost:6543/themes/bootstrap/
 theme_default: default.html
 theme: home.html
 order: [index.rst, tour, blog, about.rst]
-hide: []
+exclude: []

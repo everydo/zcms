@@ -6,4 +6,4 @@ order:
         tour
         blog
         about.rst
-hide:  [index.rst]
+exclude:  [index.rst]

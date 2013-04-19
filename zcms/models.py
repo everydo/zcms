@@ -145,7 +145,7 @@ class Folder(FRSAsset):
         metadata = self.metadata
 
         if do_filter:
-            hidden_keys = metadata.get('hide', [])
+            hidden_keys = metadata.get('exclude', [])
 	    hidden_keys.extend(['_*'])
             for key in hidden_keys:
                 for _key in fnmatch.filter(keys, key):

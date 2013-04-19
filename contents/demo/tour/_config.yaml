@@ -1,4 +1,4 @@
 title: 教程
 description: 系统教程
 order: [index.rst, tour, blog, about.rst]
-hide: []
+exclude: []
