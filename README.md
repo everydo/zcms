@@ -171,6 +171,13 @@ nginx虚拟主机
 
 3. 开启虚拟主机功能, 调整production.ini，设置use_vhm = true
 
+Jekll参考
+===================
+
+- http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html
+- http://yanping.me/cn/blog/2012/03/18/github-pages-step-by-step/
+- http://www.soimort.org/posts/101/
+
 TODO
 ================
 1. 默认的bootstrap风格皮肤还很弱，还没有支持right列
