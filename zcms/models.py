@@ -102,8 +102,6 @@ class Folder(FRSAsset):
         return (not key.startswith('.'))
 
     def _get(self, key):
-        key = key.encode('utf-8')  # key is unicode by default
-
         if not self._filter(key):
             raise KeyError(key)
 
