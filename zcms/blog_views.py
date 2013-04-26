@@ -37,7 +37,7 @@ def blog_view(context, request, size=5):
                 'description':dc.get('description', ''),
                 'url':subpath,
                 'created':getDisplayTime(dc.get('modified', dc.get('created', ''))),
-                'creator':dc.get('creators', [''])[0],
+                'creator':dc.get('creator', ''),
                 'body':converted_html,
             })
 
@@ -63,7 +63,7 @@ def blog_post_view(context, request):
     result['title'] = obj.title
     result['description'] = dc.get('description', '')
     result['created'] = dc.get('modified', dc.get('created', ''))
-    result['creator'] = dc.get('creators', [''])[0]
+    result['creator'] = dc.get('creator', '')
 
     pachs = request.url.split('/')
     img_url =  '/'.join(pachs[0:len(pachs)-2]) + '/img/'
