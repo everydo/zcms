@@ -24,6 +24,7 @@ from docutils import nodes
 from pyramid.url import resource_url
 from docutils.parsers.rst import directives
 from zcms.utils import getDisplayTime
+from datetime import datetime
 
 def news_directive(name, arguments, options, content, lineno, content_offset, block_text, state, state_machine):
     context = state.document.settings.context
@@ -56,6 +57,7 @@ def render_news(context, request, path, size=5, klass='nav nav-list'):
         url = resource_url(obj, request)
         if url.endswith('/'): url = url[:-1]
         created = dc.get('modified', dc.get('created', ''))
+        created = datetime.strptime(created, '%Y-%m-%d %H:%M')
         posts.append("""<li><a href="%s">%s</a><span>%s</span></li>""" % \
               (url, obj.title, getDisplayTime(created)))
 
