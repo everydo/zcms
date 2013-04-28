@@ -10,6 +10,7 @@ from pyramid.renderers import render
 from models import Page 
 from webhelpers import paginate
 from utils import getDisplayTime, zcms_template
+from datetime import datetime
 
 def blog_view(context, request, size=5):
     current_page = request.params.get('page', '0')
@@ -32,11 +33,12 @@ def blog_view(context, request, size=5):
                 'src="img/',
                 'src="%s/%s/../img/' % (request.application_url, url)
             )
+            created = datetime.strptime(dc.get('modified', dc.get('created', '')), '%Y-%m-%d %H:%M')
             posts.append({
                 'title':obj.title,
                 'description':dc.get('description', ''),
                 'url':subpath,
-                'created':getDisplayTime(dc.get('modified', dc.get('created', ''))),
+                'created':getDisplayTime(created),
                 'creator':dc.get('creator', ''),
                 'body':converted_html,
             })
