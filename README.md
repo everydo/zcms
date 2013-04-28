@@ -158,18 +158,43 @@ nginx虚拟主机
 
 如果我们希望实际类似这样访问
 
-     http://site_name.server.com:6543
+     http://site_name.server.com
 
 需要调整：
 
-1. 采用uwsgi来带，需要预先安装uwsgi, 使用自带的uwsgi.ini
-2. nginx.conf里面，增加rewrite指令
+1. nginx.conf里面，增加rewrite指令
 
-        if ($host = site_name\.server\.com) {
-            rewrite ^/(.*) /server.com/site_name/$1 break;
-        }
+        server{
+            listen 80;
+         
+            location  /  {
+                proxy_set_header        HOST $host;
+         
+                # 设置静态皮肤的访问，也可以改为直接由nginx提供下载
+                rewrite ^/themes/(.*) /themes/$1 break;
+         
+                # 访问viewer.example.com, 直接进入viewer站点
+                if ($host = viewer.example.com){
+                    rewrite ^/(.*) /viewer/$1 break;
+                }
 
-3. 开启虚拟主机功能, 调整production.ini，设置use_vhm = true
+                # 访问docs.example.com, 直接进入docs站点
+                if ($host = docs.example.com){
+                    rewrite ^/(.*) /docs/$1 break;
+                }
+
+                # 根站点
+                if ($host = example.com){
+                    rewrite ^/(.*) /example/$1 break;
+                }
+         
+                 proxy_pass     http://localhost:6543;
+                 proxy_redirect off;
+            }
+         
+        }       
+
+2. 开启虚拟主机功能, 调整production.ini，设置use_vhm = true
 
 Jekyll参考
 ===================
