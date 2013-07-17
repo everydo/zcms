@@ -256,9 +256,6 @@ class Folder(FRSAsset):
     def __len__(self):
         return len(self.keys())
 
-    def __call__(self):
-        return 
-
 
 class File(FRSAsset):
 
