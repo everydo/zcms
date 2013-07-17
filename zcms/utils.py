@@ -27,7 +27,7 @@ def getDisplayTime(input_time, show_mode='localdate'):
     """
     if not input_time:
         return ''
-    
+
     today = datetime.now()
     time_date = datetime(input_time.year, input_time.month, input_time.day)
     year, month, day = today.year, today.month, today.day
@@ -131,6 +131,10 @@ def zcms_template(func):
                 request.environ['PATH_INFO'] = '/%s' % path_info[2]
 
         content = func(context, request)
+        if type(content) is tuple:  # index page may change context
+            context, content = content
+        if type(content) is not unicode:
+            content = content.decode('utf-8')
 
         # 根据模版来渲染最终效果
         kw = {
@@ -144,7 +148,7 @@ def zcms_template(func):
         }
 
         theme_base = site.metadata.get('theme_base', 'http://localhost:6543/themes/bootstrap/')
-        theme_default = site.metadata.get('theme_default', 'default.html')
+        theme_default = site.metadata.get('theme', 'default.html')
         theme = context.metadata.get('theme', theme_default)
         template = get_theme_template(theme_base + theme)
         output = template.substitute(kw).encode('utf8')

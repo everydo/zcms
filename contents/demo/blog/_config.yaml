@@ -1,6 +1,6 @@
 title: 博客
 description: a demo site
-theme_default: default.html
+theme: default.html
 order: 
         index.rst
         tour

@@ -133,7 +133,7 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 在站点根文件夹下面的_config.yaml里面，定义了整个站点的皮肤
 
     theme_base: http://localhost:6543/themes/bootstrap/  # 存放模版的基准位置，这里可能存放了多个模版
-    theme_default: default.html                          # 默认的模版
+    theme: default.html                                  # 默认的模版
 
 外观模版是通过一个网址来指定的，上面的完整外观模版地址是：
 

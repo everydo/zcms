@@ -18,13 +18,12 @@ def folder_view(context, request):
         response = HTTPFound(location=request.url + '/')
         return response
 
-    defaults = ('index.rst', 'index.md')
-    for name in defaults:
+    for name in ('index.rst', 'index.md'):
         try:
             index = context[name]
         except KeyError:
             continue
-        return index.render_html(request)
+        return index, index.render_html(request)
 
     items = []
     for obj in context.values(True, True):
