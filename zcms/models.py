@@ -201,7 +201,7 @@ class Folder(FRSAsset):
             return lag
 
         # try the cache first
-	is_debug = get_current_registry().settings.get('pyramid.debug_templates', False)
+        is_debug = get_current_registry().settings.get('pyramid.debug_templates', False)
         if not is_debug and os.path.exists(cache_path):
             rf = file(cache_path, 'r')
             txt_date = rf.readline().rstrip()
@@ -255,6 +255,9 @@ class Folder(FRSAsset):
 
     def __len__(self):
         return len(self.keys())
+
+    def __call__(self):
+        return 
 
 
 class File(FRSAsset):
