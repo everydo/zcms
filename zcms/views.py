@@ -14,9 +14,6 @@ from models import Folder, Page, Image, File
 @view_config(context=Folder)
 @zcms_template
 def folder_view(context, request):
-    if not request.url.endswith('/'):
-        response = HTTPFound(location=request.url + '/')
-        return response
 
     for name in ('index.rst', 'index.md'):
         try:

@@ -68,7 +68,7 @@ class FRSAsset(object):
 
         if os.path.exists(rst_path):
             col = open(rst_path).read()
-            return col, source_path
+            return col, rst_path
 
         if self.__parent__ is None:
             return '', source_path

@@ -11,6 +11,7 @@ from string import Template
 from pyramid.response import Response
 from pyramid.threadlocal import get_current_registry
 
+
 _templates_cache = {}
 
 def getDisplayTime(input_time, show_mode='localdate'):
@@ -141,6 +142,7 @@ def zcms_template(func):
         'title': context.title + ' - ' + site.title,
         'description': context.metadata.get('description', ''),
         'nav': render_sections(site, context, request),
+        'base': resource_url(context, request),
         'content': content,
         'left': context.render_slots('left', request),
         'right': context.render_slots('right', request),
