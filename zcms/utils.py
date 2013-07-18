@@ -147,7 +147,7 @@ def zcms_template(func):
         'upper': context.render_slots('upper', request),
         }
 
-        theme_base = site.metadata.get('theme_base', 'http://localhost:6543/themes/bootstrap/')
+        theme_base = site.metadata.get('theme_base', 'https://raw.github.com/everydo/zcms/master/themes/bootstrap/')
         theme_default = site.metadata.get('theme', 'default.html')
         theme = context.metadata.get('theme', theme_default)
         template = get_theme_template(theme_base + theme)
