@@ -297,7 +297,8 @@ class Page(File):
         if self._md is None:
             f = self.frs.open(self.vpath, 'rb')
             row = f.readline().strip()
-            if row != '---': 
+            # support utf8
+            if row not in ['---', '\xef\xbb\xbf---']: 
                 self._md = {}
                 return self._md
 
