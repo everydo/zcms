@@ -42,6 +42,12 @@ class FRSAsset(object):
     def ospath(self):
         return self.frs.ospath(self.vpath)
 
+    def url(self, request):
+        """ 得到对象的URL，如果不是文件夹，去除之后的/ """
+        if isinstance(self, Folder):
+            return request.resource_url(self) 
+        else:
+            return request.resource_url(self)[:-1]
 
     @property
     def title(self):

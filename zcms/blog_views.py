@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 
 from pyramid.view import view_config
-from pyramid.url import resource_url
 from pyramid.response import Response
 from pyramid.renderers import render
 
@@ -33,7 +32,8 @@ def blog_view(context, request, size=5):
                 'src="img/',
                 'src="%s/%s/../img/' % (request.application_url, url)
             )
-            created = datetime.strptime(dc.get('modified', dc.get('created', '')), '%Y-%m-%d %H:%M')
+            created = dc.get('modified', dc.get('created', ''))
+            created = datetime.strptime(created, '%Y-%m-%d %H:%M') if created else datetime.now()
             posts.append({
                 'title':obj.title,
                 'description':dc.get('description', ''),

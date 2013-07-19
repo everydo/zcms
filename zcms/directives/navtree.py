@@ -23,7 +23,6 @@ navtree_directive.arguments = (0, 1, 0)
 from docutils import nodes
 from docutils.parsers.rst import directives
 from string import Template
-from pyramid.url import resource_url
 from zcms.models import Folder, File, Image
 
 nav_root_template = Template(r""" <ul class="${ul_class}"> ${nav_items} </ul> """)
@@ -71,7 +70,7 @@ def nav_tree(context, request, root_depth, klass):
         nodes.append(
            nav_item_template.substitute(
                class_str = 'active' if is_active else '',
-               node_url = resource_url(obj, request),
+               node_url = obj.url(request),
                node_title = obj.title,
            ))
 

@@ -3,14 +3,12 @@
 from datetime import datetime
 from docutils.core import publish_parts
 from docutils.writers.html4css1 import Writer
-from pyramid.url import resource_url
 import urllib2
 import os
 import chardet
 from string import Template
 from pyramid.response import Response
 from pyramid.threadlocal import get_current_registry
-
 
 _templates_cache = {}
 
@@ -110,9 +108,7 @@ def render_sections(site, context, request):
         if context.vpath.startswith(tab.vpath):
             class_str = "active"
 
-        tab_url = resource_url(tab, request)  # hack
-        if tab_url.endswith('.rst/'):
-            tab_url = tab_url[:-1]
+        tab_url = tab.url(request)
 
         html_list.append(
             '<li class="%s"><a href="%s">%s</a></li>'
@@ -142,7 +138,7 @@ def zcms_template(func):
         'title': context.title + ' - ' + site.title,
         'description': context.metadata.get('description', ''),
         'nav': render_sections(site, context, request),
-        'base': resource_url(context, request),
+        'base': context.url(request),
         'content': content,
         'left': context.render_slots('left', request),
         'right': context.render_slots('right', request),

@@ -21,7 +21,6 @@ navtree_directive.arguments = (0, 1, 0)
      :root_depth: one optional_arguments
 """
 from docutils import nodes
-from pyramid.url import resource_url
 from docutils.parsers.rst import directives
 from zcms.utils import getDisplayTime
 from datetime import datetime
@@ -43,7 +42,7 @@ directives.register_directive('news', news_directive)
 def render_news(context, request, path, size=5, klass='nav nav-list'):
     site = context.get_site()
     container = site.get_obj_by_subpath(path)
-    container_url = resource_url(container, request)
+    container_url = container.url(request)
     title = container.title
 
     posts = []
@@ -54,10 +53,10 @@ def render_news(context, request, path, size=5, klass='nav nav-list'):
         if obj is None: continue
 
         dc = obj.metadata
-        url = resource_url(obj, request)
+        url = obj.url(request)
         if url.endswith('/'): url = url[:-1]
         created = dc.get('modified', dc.get('created', ''))
-        created = datetime.strptime(created, '%Y-%m-%d %H:%M')
+        created = datetime.strptime(created, '%Y-%m-%d %H:%M') if created else datetime.now()
         posts.append("""<li><a href="%s">%s</a><span>%s</span></li>""" % \
               (url, obj.title, getDisplayTime(created)))
 
