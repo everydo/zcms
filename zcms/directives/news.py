@@ -55,8 +55,7 @@ def render_news(context, request, path, size=5, klass='nav nav-list'):
         dc = obj.metadata
         url = obj.url(request)
         if url.endswith('/'): url = url[:-1]
-        created = dc.get('modified', dc.get('created', ''))
-        created = datetime.strptime(created, '%Y-%m-%d %H:%M') if created else datetime.now()
+        created = dc.get('modified', dc.get('created', datetime.now()))
         posts.append("""<li><a href="%s">%s</a><span>%s</span></li>""" % \
               (url, obj.title, getDisplayTime(created)))
 

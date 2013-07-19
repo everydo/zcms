@@ -32,8 +32,7 @@ def blog_view(context, request, size=5):
                 'src="img/',
                 'src="%s/%s/../img/' % (request.application_url, url)
             )
-            created = dc.get('modified', dc.get('created', ''))
-            created = datetime.strptime(created, '%Y-%m-%d %H:%M') if created else datetime.now()
+            created = dc.get('modified', dc.get('created', datetime.now()))
             posts.append({
                 'title':obj.title,
                 'description':dc.get('description', ''),
@@ -64,7 +63,7 @@ def blog_post_view(context, request):
     result['url'] = obj.__name__
     result['title'] = obj.title
     result['description'] = dc.get('description', '')
-    result['created'] = dc.get('modified', dc.get('created', ''))
+    result['created'] = dc.get('modified', dc.get('created', datetime.now()))
     result['creator'] = dc.get('creator', '')
 
     pachs = request.url.split('/')

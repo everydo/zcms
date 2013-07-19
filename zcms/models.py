@@ -3,6 +3,7 @@
 __docformat__ = 'restructuredtext'
 import yaml
 import time
+from datetime import datetime
 import tempfile
 import os.path
 import stat
@@ -23,7 +24,7 @@ def get_sub_time_paths(folder, root_vpath):
         elif isinstance(obj, Page):
             result.append((
                 dc.get('modified', 
-                dc.get('created', '')),
+                dc.get('created', datetime.now())),
                 obj.vpath.replace(root_vpath + '/', ''),
             ))
     return result
