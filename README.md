@@ -120,8 +120,8 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
 2. 博客页面
 
-         .. blog::
-            :path: blog
+         .. blogs::
+            :size: 20
 
 3. 导航树
 
