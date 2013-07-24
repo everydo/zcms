@@ -25,13 +25,12 @@ def blog_view(context, request, size=5):
     for subpath in blog_page:
         obj = context.get_obj_by_subpath(subpath)
         if obj is not None:
-            url = '/'.join(obj.vpath.split('/')[2:])
-            dc = obj.metadata
             raw_html = obj.render_html(request)
             converted_html = raw_html.replace(
                 'src="img/',
-                'src="%s/%s/../img/' % (request.application_url, url)
+                'src="%s/../img/' % obj.url(request)
             )
+            dc = obj.metadata
             created = dc.get('modified', dc.get('created', datetime.now()))
             posts.append({
                 'title':obj.title,
