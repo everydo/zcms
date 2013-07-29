@@ -168,7 +168,7 @@ nginx虚拟主机
             listen 80;
          
             location  /  {
-                proxy_set_header        HOST $host;
+                proxy_set_header        HOST $host:$server_host;
          
                 # 设置静态皮肤的访问，也可以改为直接由nginx提供下载
                 rewrite ^/themes/(.*) /themes/$1 break;
