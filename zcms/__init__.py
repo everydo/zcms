@@ -7,6 +7,12 @@ from pyramid.config import Configurator
 from frs import FRS
 from models import Folder
 
+# fix encoding error
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+del sys.setdefaultencoding
+
 def main(global_config, sites, **settings):
 
     # 根据配置，初始化文件库
