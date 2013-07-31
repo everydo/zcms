@@ -128,7 +128,7 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
          .. navtree::
             :root_depth: 2
 
-外观模版的设置和制作
+外观模版的设置
 =========================
 在站点根文件夹下面的_config.yaml里面，定义了整个站点的皮肤
 
@@ -147,8 +147,43 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
     http://localhost:6543/themes/bootstrap/home.html
 
-具体如何定义一个外观模版？可看看themes文件夹里面的文件，因为太简单，就不细说了。
-(其实就是一个python的String Template)
+制作外观模版
+=========================
+可看看themes文件夹里面的文件，其实就是一个python的String Template.
+
+这个文件里面可以包括如下变量:
+
+- site_title: 站点的标题
+- site_description: 当前内容的描述信息
+- nav: 站点的导航栏目
+- title: 当前内容的标题
+- description: 当前内容的描述信息
+- content: 当前内容正文
+- left: 左侧列显示的内容
+- right: 右侧列显示的内容
+- upper: 上方区域显示的内容
+- theme_base: 外观模版的所在的位置
+
+一个最基础的外观模版可以是：
+
+
+     <html>
+       <head>
+          <title>$title - $site_title</title>
+          <meta name="Description" content="$site_description"/>
+       </head>
+       <body>
+          <ul>$namv</ul>
+          <div>$top</div>
+          <table>
+            <tr>
+               <td>$left</td>
+               <td>$content</td>
+               <td>$right</td>
+            </tr>
+          </table>
+       </body>
+     </html>
 
 nginx虚拟主机
 =======================

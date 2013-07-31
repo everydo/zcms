@@ -134,8 +134,11 @@ def zcms_template(func):
             content = content.decode('utf-8')
 
         # 根据模版来渲染最终效果
+        theme_base = site.metadata.get('theme_base', 'http://download.zopen.cn/themes/bootstrap/')
         kw = {
-        'title': context.title + ' - ' + site.title,
+        'site_title': site.title,
+        'site_description': site.metadata.get('description', ''),
+        'title': context.title,
         'description': context.metadata.get('description', ''),
         'nav': render_sections(site, context, request),
         'base': context.url(request),
@@ -143,9 +146,9 @@ def zcms_template(func):
         'left': context.render_slots('left', request),
         'right': context.render_slots('right', request),
         'upper': context.render_slots('upper', request),
+        'theme_base': theme_base,
         }
 
-        theme_base = site.metadata.get('theme_base', 'http://download.zopen.cn/themes/bootstrap/')
         theme_default = site.metadata.get('theme', 'default.html')
         theme = context.metadata.get('theme', theme_default)
         template = get_theme_template(theme_base + theme)
