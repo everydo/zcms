@@ -151,6 +151,8 @@ def zcms_template(func):
 
         theme_default = site.metadata.get('theme', 'default.html')
         theme = context.metadata.get('theme', theme_default)
+        if theme_base.startswith('/'):
+            theme_base = request.host_url + theme_base
         template = get_theme_template(theme_base + '/' + theme)
         output = template.substitute(kw).encode('utf8')
         return Response(output, headerlist=[
