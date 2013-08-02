@@ -231,6 +231,50 @@ nginx虚拟主机
 
 2. 开启虚拟主机功能, 调整production.ini，设置use_vhm = true
 
+uwsgi配置
+=======================
+zcms也可以在uwsgi下运行，配置方法与nginx虚拟主机类似。
+
+需要调整：
+
+1. nginx.conf里面，增加rewrite指令
+
+        server{
+            listen 80;
+         
+            location  /  {
+                
+                # uwsgi设置
+                uwsgi_param SCRIPT_NAME ""; 
+                include uwsgi_params;
+                uwsgi_pass 127.0.0.1:9010;
+
+                # 设置静态皮肤的访问，也可以改为直接由nginx提供下载
+                rewrite ^/themes/(.*) /themes/$1 break;
+         
+                # 访问viewer.example.com, 直接进入viewer站点
+                if ($host = viewer.example.com){
+                    rewrite ^/(.*) /viewer/$1 break;
+                }
+
+                # 访问docs.example.com, 直接进入docs站点
+                if ($host = docs.example.com){
+                    rewrite ^/(.*) /docs/$1 break;
+                }
+
+                # 根站点
+                if ($host = example.com){
+                    rewrite ^/(.*) /example/$1 break;
+                }
+         
+            }
+         
+        }       
+
+2. 开启虚拟主机功能, 调整production.ini，设置use_vhm = true
+
+3. 运行uwsgi --ini uwsgi.ini， uwsgi默认调用9010端口
+
 Jekyll参考
 ===================
 
