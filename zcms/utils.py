@@ -9,6 +9,7 @@ import chardet
 from string import Template
 from pyramid.response import Response
 from pyramid.threadlocal import get_current_registry
+import rst2html5
 
 _templates_cache = {}
 
@@ -93,10 +94,10 @@ def rst2html(rst, path, context, request):
     parts = publish_parts(
         rst,
         source_path = path,
-        writer = Writer(),
+        writer=rst2html5.HTML5Writer(),
         settings_overrides = settings
     )
-    return parts['html_body']
+    return parts['body']
 
 
 def render_sections(site, context, request):
