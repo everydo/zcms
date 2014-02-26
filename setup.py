@@ -23,13 +23,14 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
     'Paste',
-    'pyramid',
-    'pygments',
+    'pyramid <= 1.4.4',
+    'Pygments',
     'docutils',
     'chardet',
     'WebHelpers',
     'Markdown',
     "PyYAML",
+    "rst2html5",
 ]
 
 setup(
