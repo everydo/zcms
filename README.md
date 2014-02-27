@@ -32,6 +32,33 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
     ./bin/pserve production.ini
 
+使用docker启动
+=========================
+制作docker映像::
+
+   cd docker
+   docker build --rm=true -t zcms .
+
+运行自带的demo站点(8000端口访问)::
+
+    docker run -d -p 8000:80 zcms
+
+运行自己位于/home/panjy/sites的站点::
+
+    docker run -d -v /home/panjy/sites:/var/zcms/sites -p 8000:80 zcms
+
+调试站点皮肤（即时刷新，但是运行速度较慢）:
+
+    docker run -d -v /home/panjy/sites:/var/zcms/sites -p 8000:80 zcms debug
+
+如果你需要开发调试zcms源代码:
+
+    docker run -t -i -p 8000:80 zcms shell
+
+或者使用本地代码：
+
+    docker run -t -i -v /home/panjy/git/zcms/zcms:/opt/buildout-cache/eggs/zcms-0.5.8-py2.7.egg/zcms/ -p 8000:80 zcms debug
+
 示例站点
 =========
 我们易度的所有站点，都采用这个开发完成：
