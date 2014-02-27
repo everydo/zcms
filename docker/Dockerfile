@@ -17,7 +17,7 @@ RUN mkdir -p /var/zcms/
 ADD buildout.cfg /var/zcms/buildout.cfg
 ADD production.ini /var/zcms/production.ini
 ADD development.ini /var/zcms/development.ini
-ADD sites /var/zcms/sites
+ADD sites /var/sites
 
 # 先更新setuptools再安装fts_web
 WORKDIR /var/zcms
@@ -28,7 +28,7 @@ ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 RUN /usr/share/locales/install-language-pack en_US
 
+EXPOSE 80
+
 CMD ["start"]
 ENTRYPOINT ["/usr/local/bin/run"]
-
-EXPOSE 80

@@ -30,11 +30,11 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
 运行自己位于/home/panjy/sites的站点::
 
-    docker run -d -v /home/panjy/sites:/var/zcms/sites -p 8000:80 --name zcms zcms
+    docker run -d -v /home/panjy/sites:/var/sites -p 8000:80 --name zcms zcms
 
 调试站点皮肤（即时刷新，但是运行速度较慢）:
 
-    docker run -d -v /home/panjy/sites:/var/zcms/sites -p 8000:80 --name zcms zcms debug
+    docker run -d -v /home/panjy/sites:/var/sites -p 8000:80 --name zcms zcms debug
 
 开发调试代码
 ===================
