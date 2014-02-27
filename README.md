@@ -1,31 +1,31 @@
 ================================
 zcms : 基于文件系统的超轻CMS
 ================================
-厌倦了各种复杂的CMS建站系统？厌倦了升级，迁移，学习管理... 
+zcms是一个极简的基于文件系统CMS(类Jekyll)，都是你熟悉的:
 
-然而，Sphinx-doc太单调太简单了，Jekyll也还是太复杂...
-
-那么zcms来了, 一个极简的CMS，都是你熟悉的:
-
-- 无需数据库, 每个页面是一个文本文件
+- 无需数据库, 每个页面是一个文本文件(rst/md)
 - 扩展reStructuredText指令(.rst)，轻松实现博客、导航、新闻等动态内容
-- 支持Markdown格式(.md)编写页面
-- 当然支持html页面(.html)
-- 支持多站点
 
-zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任何开发知识即可掌握. 
+示例站点:
 
-欢迎微博传播，如有反馈，请微博联系: http://weibo.com/panjunyong
+- http://viewer.everydo.com
+- http://developer.everydo.com
+- http://everydo.com
+- http://edodocs.com
 
-使用docker安装： https://index.docker.io/u/panjunyong/zcms/
+运行自带的demo站点(8000端口访问):
 
-开发调试代码
-===================
-使用本地代码(/home/panjy/git/zcms):
+    docker run -d -p 8000:80 panjunyong/zcms
 
-    docker run -t -i -v /home/panjy/git/zcms:/opt/zcms/ -p 8000:80 zcms shell
-    bin/buildout
-    bin/pserve development.ini
+运行自己位于/home/panjy/sites的站点::
+
+    docker run -d -v /home/panjy/sites:/var/sites -p 8000:80 panjunyong/zcms
+
+调试站点皮肤（即时刷新，但是运行速度较慢）:
+
+    docker run -d -v /home/panjy/sites:/var/sites -p 8000:80 panjunyong/zcms debug
+
+如有反馈，请微博联系: http://weibo.com/panjunyong
 
 无阻力建站
 ============================
@@ -157,6 +157,13 @@ zcms也可以在uwsgi下运行，配置方法与nginx虚拟主机类似:
 
 2. 运行uwsgi --ini uwsgi.ini， uwsgi默认调用9010端口
 
+开发调试代码
+===================
+使用本地代码(/home/panjy/git/zcms):
+
+    docker run -t -i -v /home/panjy/git/zcms:/opt/zcms/ -p 8000:80 panjunyong/zcms shell
+    bin/buildout
+    bin/pserve development.ini
 
 Jekyll参考
 ===================
