@@ -17,21 +17,6 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
 欢迎微博传播，如有反馈，请微博联系: http://weibo.com/panjunyong
 
-启动服务
-=======================
-准备运行环境:
-
-     python bootstrap.py
-     bin/buildout
-     
-站点制作过程，启动：
-
-    ./bin/pserve development.ini
-
-正式使用(缓存加速)，启动：
-
-    ./bin/pserve production.ini
-
 使用docker启动
 =========================
 制作docker映像::
@@ -51,13 +36,24 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
     docker run -d -v /home/panjy/sites:/var/zcms/sites -p 8000:80 zcms debug
 
-如果你需要开发调试zcms源代码:
+开发调试代码
+===================
+使用本地代码：
 
-    docker run -t -i -p 8000:80 zcms shell
+    docker run -t -i -v /home/panjy/git/zcms:/opt/zcms/ -p 8000:80 zcms shell
 
-或者使用本地代码：
+准备运行环境:
 
-    docker run -t -i -v /home/panjy/git/zcms/zcms:/opt/buildout-cache/eggs/zcms-0.5.8-py2.7.egg/zcms/ -p 8000:80 zcms debug
+     bin/buildout
+     
+站点制作过程，启动：
+
+    ./bin/pserve development.ini
+
+正式使用(缓存加速)，启动：
+
+    ./bin/pserve production.ini
+
 
 示例站点
 =========
@@ -200,8 +196,8 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
           <meta name="Description" content="$site_description"/>
        </head>
        <body>
-          <ul>$namv</ul>
-          <div>$top</div>
+          <ul>$nav</ul>
+          <div>$upper</div>
           <table>
             <tr>
                <td>$left</td>
@@ -235,6 +231,9 @@ nginx虚拟主机
                 # 设置静态皮肤的访问，也可以改为直接由nginx提供下载
                 rewrite ^/themes/(.*) /themes/$1 break;
          
+                # 通知zcms开启虚拟主机功能
+                add_header X-ZCMS-VHM true;
+
                 # 访问viewer.example.com, 直接进入viewer站点
                 if ($host = viewer.example.com){
                     rewrite ^/(.*) /viewer/$1 break;
@@ -256,7 +255,6 @@ nginx虚拟主机
          
         }       
 
-2. 开启虚拟主机功能, 调整production.ini，设置use_vhm = true
 
 uwsgi配置
 =======================

@@ -12,6 +12,25 @@ from pyramid.threadlocal import get_current_registry
 import rst2html5
 
 _templates_cache = {}
+EMPTY_THEME = u"""
+     <html>
+       <head>
+          <title>$title - $site_title</title>
+          <meta name="Description" content="$site_description"/>
+       </head>
+       <body>
+          <ul>$nav</ul>
+          <div>$upper</div>
+          <table>
+            <tr>
+               <td>$left</td>
+               <td>$content</td>
+               <td>$right</td>
+            </tr>
+          </table>
+       </body>
+     </html>
+"""
 
 def getDisplayTime(input_time, show_mode='localdate'):
     """ 人性化的时间显示: (支持时区转换)
@@ -121,7 +140,7 @@ def render_sections(site, context, request):
 def zcms_template(func):
     def _func(context, request):
         site = context.get_site()
-        if request.registry.settings['use_vhm'] == 'true':
+        if 'X-ZCMS-VHM' in request.headers:
             # 线上运行，多站点支持, support ngix
             path_info = request.environ['PATH_INFO'].split('/', 2)
             if len(path_info) > 2:
@@ -135,7 +154,7 @@ def zcms_template(func):
             content = content.decode('utf-8')
 
         # 根据模版来渲染最终效果
-        theme_base = site.metadata.get('theme_base', 'http://download.zopen.cn/themes/bootstrap')
+        theme_base = site.metadata.get('theme_base', '')
         kw = {
         'site_title': site.title,
         'site_description': site.metadata.get('description', ''),
@@ -170,9 +189,12 @@ def get_theme_template(theme_url):
     if not is_debug and theme_url in _templates_cache:
         return _templates_cache[theme_url]
 
-    theme = urllib2.urlopen(theme_url).read()
-    text_encoding = chardet.detect(theme)['encoding']
-    theme = theme.decode(text_encoding)
+    if theme_url == '/default.html':
+        theme = EMPTY_THEME
+    else:
+        theme = urllib2.urlopen(theme_url).read()
+        text_encoding = chardet.detect(theme)['encoding']
+        theme = theme.decode(text_encoding)
     template = Template(theme)
     _templates_cache[theme_url] = template
     return template
