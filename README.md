@@ -26,15 +26,15 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
 运行自带的demo站点(8000端口访问)::
 
-    docker run -d -p 8000:80 zcms
+    docker run -d -p 8000:80 --name zcms zcms
 
 运行自己位于/home/panjy/sites的站点::
 
-    docker run -d -v /home/panjy/sites:/var/zcms/sites -p 8000:80 zcms
+    docker run -d -v /home/panjy/sites:/var/zcms/sites -p 8000:80 --name zcms zcms
 
 调试站点皮肤（即时刷新，但是运行速度较慢）:
 
-    docker run -d -v /home/panjy/sites:/var/zcms/sites -p 8000:80 zcms debug
+    docker run -d -v /home/panjy/sites:/var/zcms/sites -p 8000:80 --name zcms zcms debug
 
 开发调试代码
 ===================
@@ -210,6 +210,12 @@ zcms吸取了Jekyll优点，使用python/pyramid开发完成，完全无需任�
 
 nginx虚拟主机
 =======================
+1. 参考zcms-nginx/nginx.conf, 编写自己需要的nginx站点配置，放入文件夹 /home/panjy/zcms-nginx
+2. 启动nignx::
+
+     docker run -d -p 8001:80 -v /home/panjy/zcms-nginx/:/etc/nginx/sites-enabled --name nginx dockerfile/nginx
+
+
 默认安装，我们得到的地址首页是
 
      http://server.com:6543/site_name
@@ -217,43 +223,6 @@ nginx虚拟主机
 如果我们希望实际类似这样访问
 
      http://site_name.server.com
-
-需要调整：
-
-1. nginx.conf里面，增加rewrite指令
-
-        server{
-            listen 80;
-         
-            location  /  {
-                proxy_set_header        HOST $host:$server_host;
-         
-                # 设置静态皮肤的访问，也可以改为直接由nginx提供下载
-                rewrite ^/themes/(.*) /themes/$1 break;
-         
-                # 通知zcms开启虚拟主机功能
-                add_header X-ZCMS-VHM true;
-
-                # 访问viewer.example.com, 直接进入viewer站点
-                if ($host = viewer.example.com){
-                    rewrite ^/(.*) /viewer/$1 break;
-                }
-
-                # 访问docs.example.com, 直接进入docs站点
-                if ($host = docs.example.com){
-                    rewrite ^/(.*) /docs/$1 break;
-                }
-
-                # 根站点
-                if ($host = example.com){
-                    rewrite ^/(.*) /example/$1 break;
-                }
-         
-                 proxy_pass     http://localhost:6543;
-                 proxy_redirect off;
-            }
-         
-        }       
 
 
 uwsgi配置
