@@ -5,6 +5,7 @@ MAINTAINER panjunyong@gmail.com
 RUN echo "deb http://mirrors.ustc.edu.cn/ubuntu precise main universe" > /etc/apt/sources.list && \
     apt-get update && \
     apt-get -y install python-dev python-pip && \
+    apt-get install -y software-properties-common && \
     apt-get -y clean all 
 
 # 安装nginx
