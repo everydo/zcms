@@ -174,7 +174,7 @@ Jekyll参考
 
 TODO
 ================
-1. 默认的bootstrap风格皮肤还很弱，还没有支持right列
+1. 优化默认的bootstrap风格皮肤
 2. 简化虚拟主机的配置：
 
    - 合并nginx和zcms这2个docker
