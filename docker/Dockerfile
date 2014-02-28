@@ -9,7 +9,7 @@ RUN echo "deb http://mirrors.ustc.edu.cn/ubuntu precise main universe" > /etc/ap
     apt-get -y clean all 
 
 # 安装nginx
-RUN add-apt-repository -y ppa:nginx/stable
+#RUN add-apt-repository -y ppa:nginx/stable
 RUN apt-get update
 RUN apt-get install -y nginx
 RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
