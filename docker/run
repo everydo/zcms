@@ -7,10 +7,14 @@ if [[ $1 == "shell" ]]; then
 fi
 
 if [[ $1 == "start" ]]; then 
+    /var/zcms/bin/python nginx_conf.py
+    nginx &
     /var/zcms/bin/pserve /var/zcms/production.ini
 fi
 
 if [[ $1 == "debug" ]]; then
+    /var/zcms/bin/python nginx_conf.py
+    nginx &
     /var/zcms/bin/pserve /var/zcms/development.ini
 fi
 

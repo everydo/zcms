@@ -136,26 +136,21 @@ zcms是一个极简的基于文件系统CMS(类Jekyll)，都是你熟悉的:
 - `upper` : 上方区域显示的内容
 - `theme_base` : 外观模版的所在的位置
 
-nginx虚拟主机
-=======================
-1. 参考zcms-nginx/nginx.conf, 编写自己需要的nginx站点配置，放入文件夹 /home/panjy/zcms-nginx
-2. 启动nignx:
+虚拟主机设置
+-----------------
+在站点根文件夹下面的_config.yaml里面，定义了整个站点的虚拟主机设置：
 
-     docker run -d -p 8001:80 -v /home/panjy/zcms-nginx/:/etc/nginx/sites-enabled --name nginx dockerfile/nginx
+       domain_name: domain.com, www.domain.com # 域名
+       port:  80   # 访问端口
+       site_base: site_name  # 这个默认就是站点的名字
 
-默认安装，我们得到的地址首页是
+其中如果不设置 `site_name` , 我们得到的地址首页是
 
-     http://server.com:6543/site_name
+       http://domain.com:port/site_name
 
-如果我们希望实际类似这样访问
+如果设置 `site_name` 为空，则可以直接通过域名来访问
 
-     http://site_name.server.com
-
-zcms也可以在uwsgi下运行，配置方法与nginx虚拟主机类似:
-
-1. nginx.conf, 改为使用uwsgi
-
-2. 运行uwsgi --ini uwsgi.ini， uwsgi默认调用9010端口
+       http://site_name.server.com
 
 开发调试代码
 ===================
