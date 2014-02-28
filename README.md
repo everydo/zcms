@@ -175,7 +175,12 @@ Jekyll参考
 TODO
 ================
 1. 默认的bootstrap风格皮肤还很弱，还没有支持right列
-2. production模式下，应该大量缓存加速，减少io
-3. 提供webdav api
-4. 提供RSS输出
-5. 使用zapian进行全文搜索、排序等
+2. 简化虚拟主机的配置：
+
+   - 合并nginx和zcms这2个docker
+   - 各个站点部署方面的配置转到站点的 `_config.py` 中
+   - 自动生成nginx的配置文件
+
+3. production模式下，应该大量缓存加速，减少io
+4. 提供webdav api
+5. 提供RSS输出
