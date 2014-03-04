@@ -141,16 +141,8 @@ zcms是一个极简的基于文件系统CMS(类Jekyll)，都是你熟悉的:
 在站点根文件夹下面的_config.yaml里面，定义了整个站点的虚拟主机设置：
 
        domain_name: domain.com, www.domain.com # 域名
-       port:  80   # 访问端口
-       site_base: site_name  # 这个默认就是站点的名字
 
-其中如果不设置 `site_name` , 我们得到的地址首页是
-
-       http://domain.com:port/site_name
-
-如果设置 `site_name` 为空，则可以直接通过域名来访问
-
-       http://site_name.server.com
+这表示，可以通过上述 `domain_name` 直接访问站点，url路径上可省略 `site_name`
 
 开发调试代码
 ===================
