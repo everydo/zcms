@@ -1,6 +1,7 @@
 title: demo site
 description: a demo site
-theme_base: /themes/bootstrap
+theme_base: http://127.0.0.1:80/themes/bootstrap
 theme: default.html
 order: [index.rst, tour, blog, about.rst]
 exclude: []
+domain_name: www.domain.com
