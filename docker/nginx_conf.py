@@ -17,7 +17,7 @@ nginx_conf = """server{
 
         rewrite ^/themes/(.*) /themes/$1 break;
 
-        proxy_pass     http://127.0.0.1:8001;
+        proxy_pass     http://127.0.0.1:8000;
         proxy_redirect off;
     }
 }
@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
                 rewrite ^/(.*) /%s/$1 break;
 
-                proxy_pass     http://127.0.0.1:8001;
+                proxy_pass     http://127.0.0.1:8000;
                 proxy_redirect off;
                 }
                 }""" % (site_config['domain_name'], site_name))
