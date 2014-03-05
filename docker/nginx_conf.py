@@ -13,7 +13,7 @@ import yaml
 nginx_conf = """server{
     listen 80;
     location  /  {
-        proxy_set_header        HOST $host:8000;
+        proxy_set_header        HOST $http_host;
 
         rewrite ^/themes/(.*) /themes/$1 break;
 
@@ -35,7 +35,7 @@ if __name__ == '__main__':
                 listen 80;
                 server_name %s;
                 location  /  {
-                proxy_set_header        HOST $host:8000;
+                proxy_set_header        HOST $http_host;
                 rewrite ^/themes/(.*) /themes/$1 break;
                 proxy_set_header        X-ZCMS-VHM true;
 
