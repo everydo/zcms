@@ -198,3 +198,4 @@ def get_theme_template(theme_url):
     template = Template(theme)
     _templates_cache[theme_url] = template
     return template
+

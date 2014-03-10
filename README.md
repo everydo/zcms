@@ -144,6 +144,15 @@ zcms是一个极简的基于文件系统CMS(类Jekyll)，都是你熟悉的:
 
 这表示，可以通过上述 `domain_name` 直接访问站点，url路径上可省略 `site_name`
 
+更新缓存
+===================
+默认系统会自动对theme进行缓存，最近更新等内容是每天刷新一次。
+
+可调用如下地址，手动进行即时刷新:
+
+1. 更新皮肤： `http://server.com/clear_theme_cache`
+2. 更新内容： `http://server.com/clear_content_cache`
+
 开发调试代码
 ===================
 使用本地代码(/home/panjy/git/zcms):

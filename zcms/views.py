@@ -8,8 +8,9 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render, render_to_response
 from pyramid.response import Response
 
-from utils import zcms_template
+from utils import zcms_template, _templates_cache
 from models import Folder, Page, Image, File
+import tempfile
 
 @view_config(context=Folder)
 @zcms_template
@@ -94,3 +95,13 @@ def download_view(context, request):
     else:
         response.content_type = mt or 'text/plain'
     return response
+
+@view_config(context=Folder, name="clear_theme_cache")
+def clear_theme_cache():
+    _templates_cache.clear()
+
+@view_config(context=Folder, name="clear_content_cache")
+def clear_content_cache():
+    tmp_dir = tempfile.gettempdir() 
+    os.system( 'rm -rf %s/zcmscache*' % tmp_dir ) 
+
